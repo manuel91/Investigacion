@@ -1,21 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/1"/>
-    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/1">
-        <file>file:/C:/Users/Alejandro/Desktop/ProyectoPatrones/src/proyectopatrones/ProyectoPatrones.java</file>
-        <file>file:/C:/Users/Alejandro/Desktop/ProyectoPatrones/src/proyectopatrones/Autenticar.java</file>
-        <file>file:/C:/Users/Alejandro/Desktop/ProyectoPatrones/src/proyectopatrones/AdminInterface.java</file>
-        <file>file:/C:/Users/Alejandro/Desktop/ProyectoPatrones/src/proyectopatrones/Usuario.java</file>
-        <file>file:/C:/Users/Alejandro/Desktop/ProyectoPatrones/src/proyectopatrones/Administrador.java</file>
-        <file>file:/C:/Users/Alejandro/Desktop/ProyectoPatrones/src/proyectopatrones/Investigador.java</file>
-        <file>file:/C:/Users/Alejandro/Desktop/ProyectoPatrones/src/proyectopatrones/FormularioCasos.java</file>
-        <file>file:/C:/Users/Alejandro/Desktop/ProyectoPatrones/src/proyectopatrones/CreadorCaso.java</file>
-        <file>file:/C:/Users/Alejandro/Desktop/ProyectoPatrones/src/proyectopatrones/RegistrarInvestigacion.java</file>
-        <file>file:/C:/Users/Alejandro/Desktop/ProyectoPatrones/src/proyectopatrones/RegistrarFraude.java</file>
-        <file>file:/C:/Users/Alejandro/Desktop/ProyectoPatrones/src/proyectopatrones/RegistrarRobo.java</file>
-        <file>file:/C:/Users/Alejandro/Desktop/ProyectoPatrones/src/proyectopatrones/Robo.java</file>
-        <file>file:/C:/Users/Alejandro/Desktop/ProyectoPatrones/src/proyectopatrones/Investigacion.java</file>
-        <file>file:/C:/Users/Alejandro/Desktop/ProyectoPatrones/src/proyectopatrones/Fraude.java</file>
-        <file>file:/C:/Users/Alejandro/Desktop/ProyectoPatrones/src/proyectopatrones/Caso_de_Investigacion.java</file>
-    </open-files>
 </project-private>
