@@ -4,6 +4,8 @@
  */
 package proyectopatrones;
 
+import proyectopatrones.interfaz.AdminInterface;
+
 
 
 /**
