@@ -5,15 +5,19 @@
 
 package proyectopatrones.interfaz;
 
+import java.awt.Color;
 import proyectopatrones.clases.Administrador;
 import proyectopatrones.interfaz.FormularioCasos;
 import java.sql.DriverManager;
 import java.sql.Connection;
 import java.lang.ClassNotFoundException;
 import java.sql.*;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
+import proyectopatrones.Alarmas;
 
 /**
  *
@@ -26,9 +30,18 @@ public class AdminInterface extends javax.swing.JFrame {
     private DefaultTableModel model;
     private FormularioCasos formulario_casos;
     private FormularioCierre formulario_cierre;
-    private FormularioInvestigador formulario_investigador;
+    private FormularioAsignacion formulario_asignacion;
     private FormularioSeguimiento formulario_seguimiento;
+    private FormularioInvestigador formulario_investigador;
+    private DatosRobo datos_robo;
     private Administrador admin;
+    private ArrayList ci_inv;
+    
+    ArrayList AlertY;
+    ArrayList AlertO;
+    ArrayList AlertR;
+    
+    
     /**
      * Creates new form AdminInterface
      */
@@ -38,8 +51,12 @@ public class AdminInterface extends javax.swing.JFrame {
         try{
            Class.forName("com.mysql.jdbc.Driver");
            admin.con = DriverManager.getConnection("jdbc:mysql://localhost/CasosInv", "root", "");
-           formulario_casos = new FormularioCasos(admin, 1);
            
+           AlertY = new ArrayList();
+           AlertO = new ArrayList();
+           AlertR = new ArrayList();
+           
+           ci_inv = new ArrayList();
            /**** avisamos ****/
            //System.out.println( "Si he llegado hasta aquí es que se ha producido la conexión");
            //System.out.println( "Si no se hubiera producido, se habría disparado SQLException");
@@ -58,19 +75,45 @@ public class AdminInterface extends javax.swing.JFrame {
     
     public void RefreshCartelera(){
         try{
-            res = stmt.executeQuery("select nro_expediente, tipo_de_caso, investigador, estado from casos_de_investigacion");
+            res = stmt.executeQuery("select nro_expediente, tipo_de_caso, investigador, estado, duracion, cedula_investigador from casos_de_investigacion");
             String titulos[] = {"Nro Expediente", "Tipo de Caso", "Investigador", "Estado"};
             model = new DefaultTableModel(null, titulos);
+            
+            int id = 0;
+            int nivel;
+            
+            ci_inv.clear();
+            AlertY.clear();
+            AlertO.clear();
+            AlertR.clear();
+            
             while (res.next()){
                //System.out.println(res.getString(1) + " " + res.getString(2) + " " + res.getString(3) + " " + res.getString(4));
                fila[0] = res.getString(1);
                fila[1] = res.getString(2);
                fila[2] = res.getString(3);
                fila[3] = res.getString(4);
+               nivel = Integer.parseInt(res.getString(5));
+               
+               ci_inv.add(res.getString(6));
+
+               if(nivel>30 && nivel<50)
+                   AlertY.add(id);
+               
+               if(nivel>50 && nivel<70)
+                   AlertO.add(id);
+               
+               if(nivel>70)
+                   AlertR.add(id);
+
+               id++;
                
                model.addRow(fila);
+               
             }
             cartelera.setModel(model);
+            cartelera.getColumnModel().getColumn(0).setCellRenderer(new Alarmas(AlertY, AlertO, AlertR));
+            // cartelera.setDefaultRenderer(new YourTableCellRenderer());
         }
         catch ( SQLException e) { e.printStackTrace();  }
     }
@@ -99,10 +142,13 @@ public class AdminInterface extends javax.swing.JFrame {
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
         salir = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
+        registrar = new javax.swing.JMenuItem();
         asignar = new javax.swing.JMenuItem();
         seguimiento = new javax.swing.JMenuItem();
-        entidades = new javax.swing.JMenuItem();
-        reporte = new javax.swing.JMenuItem();
+        reportes = new javax.swing.JMenu();
+        rep_op1 = new javax.swing.JMenuItem();
+        rep_op2 = new javax.swing.JMenuItem();
+        rep_op3 = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         amonestados = new javax.swing.JMenuItem();
         robos = new javax.swing.JMenuItem();
@@ -219,6 +265,14 @@ public class AdminInterface extends javax.swing.JFrame {
 
         jMenu2.setText("Acción");
 
+        registrar.setText("Registrar investigador");
+        registrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                registrarActionPerformed(evt);
+            }
+        });
+        jMenu2.add(registrar);
+
         asignar.setText("Asignar investigador");
         asignar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -235,17 +289,44 @@ public class AdminInterface extends javax.swing.JFrame {
         });
         jMenu2.add(seguimiento);
 
-        entidades.setText("Gestionar entidades");
-        jMenu2.add(entidades);
+        reportes.setText("Emitir reporte");
 
-        reporte.setText("Emitir reporte");
-        jMenu2.add(reporte);
+        rep_op1.setText("Empresas con más casos registrados");
+        rep_op1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rep_op1ActionPerformed(evt);
+            }
+        });
+        reportes.add(rep_op1);
+
+        rep_op2.setText("Investigadores con más casos atendidos");
+        rep_op2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rep_op2ActionPerformed(evt);
+            }
+        });
+        reportes.add(rep_op2);
+
+        rep_op3.setText("Casos con más de 3 casos relacionados");
+        rep_op3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rep_op3ActionPerformed(evt);
+            }
+        });
+        reportes.add(rep_op3);
+
+        jMenu2.add(reportes);
 
         jMenuBar1.add(jMenu2);
 
         jMenu3.setText("Manejar");
 
         amonestados.setText("Personal amonestado");
+        amonestados.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                amonestadosActionPerformed(evt);
+            }
+        });
         jMenu3.add(amonestados);
 
         robos.setText("Equipos robados");
@@ -277,13 +358,23 @@ public class AdminInterface extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void crearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_crearActionPerformed
-       formulario_casos.setVisible(true);
+        formulario_casos = new FormularioCasos(admin, 1);
+        formulario_casos.setVisible(true);
     }//GEN-LAST:event_crearActionPerformed
 
     private void marcarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_marcarActionPerformed
         int fila = cartelera.getSelectedRow();
-        String nro_exp = (String) cartelera.getValueAt(fila,0);     
-        admin.MarcarArchivo(nro_exp);
+        if(fila != -1){
+            String nro_exp = (String) cartelera.getValueAt(fila,0);
+            String state = (String) cartelera.getValueAt(fila,3);
+            if(!state.equals("Negado")){
+                admin.MarcarArchivo(nro_exp);
+            }else{
+                JOptionPane.showMessageDialog(null, "Error: el caso se encuentra Negado");   
+            }
+        }else{
+            JOptionPane.showMessageDialog(null, "Error: no ha sido seleccionado un caso de investigación");
+        }
     }//GEN-LAST:event_marcarActionPerformed
 
     private void salirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salirActionPerformed
@@ -293,31 +384,61 @@ public class AdminInterface extends javax.swing.JFrame {
 
     private void abrirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_abrirActionPerformed
         int fila = cartelera.getSelectedRow();
-        String nro_exp = (String) cartelera.getValueAt(fila,0);     
-        admin.AbrirCaso(nro_exp);
+        if(fila != -1){
+            String nro_exp = (String) cartelera.getValueAt(fila,0);
+            String state = (String) cartelera.getValueAt(fila,3);
+            if(state.equals("Cerrado")){
+                admin.AbrirCaso(nro_exp);
+            }else{
+                JOptionPane.showMessageDialog(null, "Error: el caso se encuentra Abierto");   
+            }
+        }else{
+            JOptionPane.showMessageDialog(null, "Error: no ha sido seleccionado un caso de investigación");
+        }
     }//GEN-LAST:event_abrirActionPerformed
 
     private void seguimientoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_seguimientoActionPerformed
         int fila = cartelera.getSelectedRow();
-        String nro_exp = (String) cartelera.getValueAt(fila,0);
-        String tipo_caso = (String) cartelera.getValueAt(fila,1);
-        if(tipo_caso.equals("Fraude")){
-            formulario_seguimiento = new FormularioSeguimiento(admin, nro_exp);
-            formulario_seguimiento.setVisible(true);
+        if(fila != -1){
+            String nro_exp = (String) cartelera.getValueAt(fila,0);
+            String tipo_caso = (String) cartelera.getValueAt(fila,1);
+            if(tipo_caso.equals("Fraude")){
+                formulario_seguimiento = new FormularioSeguimiento(admin, nro_exp);
+                formulario_seguimiento.setVisible(true);
+            }else{
+                JOptionPane.showMessageDialog(null, "Error: el caso seleccionado tiene que ser de tipo Fraude");
+            }
         }else{
-            JOptionPane.showMessageDialog(null, "Error: el caso seleccionado tiene que ser de tipo Fraude");
+            JOptionPane.showMessageDialog(null, "Error: no ha sido seleccionado un caso de investigación");
         }
     }//GEN-LAST:event_seguimientoActionPerformed
 
     private void robosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_robosActionPerformed
-        // TODO add your handling code here:
+        int fila = cartelera.getSelectedRow();
+        if(fila != -1){
+            String state = (String) cartelera.getValueAt(fila,3);
+            String tipo_caso = (String) cartelera.getValueAt(fila,1);
+            String nro_exp = (String) cartelera.getValueAt(fila,0);
+            if(state.equals("Negado") && tipo_caso.equals("Robo")){
+                datos_robo = new DatosRobo(admin, nro_exp);
+                datos_robo.setVisible(true);
+            }else{
+                JOptionPane.showMessageDialog(null, "Error: el caso no se encuentra Negado o no es un caso de tipo Robo");
+            }
+        }else{
+            JOptionPane.showMessageDialog(null, "Error: no ha sido seleccionado un caso de investigación");
+        }
     }//GEN-LAST:event_robosActionPerformed
 
     private void asignarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_asignarActionPerformed
         int fila = cartelera.getSelectedRow();
-        String nro_exp = (String) cartelera.getValueAt(fila,0);
-        formulario_investigador = new FormularioInvestigador(admin, nro_exp);
-        formulario_investigador.setVisible(true);
+        if(fila != -1){
+            String nro_exp = (String) cartelera.getValueAt(fila,0);
+            formulario_asignacion = new FormularioAsignacion(admin, nro_exp);
+            formulario_asignacion.setVisible(true);
+        }else{
+            JOptionPane.showMessageDialog(null, "Error: no ha sido seleccionado un caso de investigación");
+        }
     }//GEN-LAST:event_asignarActionPerformed
 
     private void refreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshActionPerformed
@@ -326,15 +447,52 @@ public class AdminInterface extends javax.swing.JFrame {
 
     private void cerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cerrarActionPerformed
         int fila = cartelera.getSelectedRow();
-        String nro_exp = (String) cartelera.getValueAt(fila,0);
-        String state = (String) cartelera.getValueAt(fila,3);
-        if(!state.equals("Cerrado")){
-            formulario_cierre = new FormularioCierre(admin, nro_exp);
-            formulario_cierre.setVisible(true);
+        if(fila != -1){
+            String nro_exp = (String) cartelera.getValueAt(fila,0);
+            String state = (String) cartelera.getValueAt(fila,3);
+            if(!state.equals("Cerrado")){
+                formulario_cierre = new FormularioCierre(admin, nro_exp);
+                formulario_cierre.setVisible(true);
+            }else{
+                JOptionPane.showMessageDialog(null, "Error: el caso se encuentra Cerrado");
+            }
         }else{
-            JOptionPane.showMessageDialog(null, "Error: el caso se encuentra cerrado");
+            JOptionPane.showMessageDialog(null, "Error: no ha sido seleccionado un caso de investigación");
         }
     }//GEN-LAST:event_cerrarActionPerformed
+
+    private void rep_op1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rep_op1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rep_op1ActionPerformed
+
+    private void rep_op2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rep_op2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rep_op2ActionPerformed
+
+    private void rep_op3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rep_op3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rep_op3ActionPerformed
+
+    private void registrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registrarActionPerformed
+        formulario_investigador = new FormularioInvestigador(admin, null);
+        formulario_investigador.setVisible(true);
+    }//GEN-LAST:event_registrarActionPerformed
+
+    private void amonestadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_amonestadosActionPerformed
+        int fila = cartelera.getSelectedRow();
+        if(fila != -1){
+            String state = (String) cartelera.getValueAt(fila,3);
+            if(state.equals("Negado")){
+                String ci = (String) ci_inv.get(fila);
+                formulario_investigador = new FormularioInvestigador(admin, ci);
+                formulario_investigador.setVisible(true);
+            }else{
+                JOptionPane.showMessageDialog(null, "Error: el caso no se encuentra Negado");
+            }
+        }else{
+            JOptionPane.showMessageDialog(null, "Error: no ha sido seleccionado un caso de investigación");
+        }
+    }//GEN-LAST:event_amonestadosActionPerformed
 
     /**
      * @param args the command line arguments
@@ -385,7 +543,6 @@ public class AdminInterface extends javax.swing.JFrame {
     private javax.swing.JTable cartelera;
     private javax.swing.JMenuItem cerrar;
     private javax.swing.JMenuItem crear;
-    private javax.swing.JMenuItem entidades;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
@@ -396,7 +553,11 @@ public class AdminInterface extends javax.swing.JFrame {
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JMenuItem marcar;
     private javax.swing.JButton refresh;
-    private javax.swing.JMenuItem reporte;
+    private javax.swing.JMenuItem registrar;
+    private javax.swing.JMenuItem rep_op1;
+    private javax.swing.JMenuItem rep_op2;
+    private javax.swing.JMenuItem rep_op3;
+    private javax.swing.JMenu reportes;
     private javax.swing.JMenuItem robos;
     private javax.swing.JMenuItem salir;
     private javax.swing.JMenuItem seguimiento;

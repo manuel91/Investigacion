@@ -26,8 +26,8 @@ public class FormularioCasos extends javax.swing.JFrame {
     
     public FormularioCasos(Usuario user, int typeU) {
         initComponents();
-        this.typeU = typeU;
         this.user = user;
+        this.typeU = typeU;
     }
 
     /**
@@ -459,7 +459,7 @@ public class FormularioCasos extends javax.swing.JFrame {
             
         int typeC = tipo_caso.getSelectedIndex();
         
-        user.RegistrarCaso(datos, typeC);
+        user.CrearCaso(datos, typeC);
 
         this.setVisible(false);
     }//GEN-LAST:event_sendActionPerformed

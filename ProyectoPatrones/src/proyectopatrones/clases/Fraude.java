@@ -71,7 +71,7 @@ public class Fraude extends Caso_de_Investigacion{
             if(aux1>0){
                 Statement stmt = con.createStatement();
                 ResultSet res;
-                res = stmt.executeQuery("select nro_expediente from casos_de_investigacion order by nro_expediente desc limit 1 ");
+                res = stmt.executeQuery("select nro_expediente from casos_de_investigacion order by nro_expediente desc limit 1");
 
                 String id = null;
                 while (res.next()){

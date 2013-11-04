@@ -16,7 +16,7 @@ public class Usuario {
     public Connection con;
     public CreadorCaso creadorI, creadorR, creadorF;
     
-    public void RegistrarCaso(String[] datos, int typeC){
+    public void CrearCaso(String[] datos, int typeC){
         Caso_de_Investigacion aux;
         switch(typeC){
             case 0:

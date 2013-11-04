@@ -58,6 +58,14 @@
             <Property name="text" type="java.lang.String" value="Acci&#xf3;n"/>
           </Properties>
           <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="registrar">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Registrar investigador"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="registrarActionPerformed"/>
+              </Events>
+            </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="asignar">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Asignar investigador"/>
@@ -74,16 +82,37 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="seguimientoActionPerformed"/>
               </Events>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="entidades">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Gestionar entidades"/>
-              </Properties>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="reporte">
+            <Menu class="javax.swing.JMenu" name="reportes">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Emitir reporte"/>
               </Properties>
-            </MenuItem>
+              <SubComponents>
+                <MenuItem class="javax.swing.JMenuItem" name="rep_op1">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Empresas con m&#xe1;s casos registrados"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="rep_op1ActionPerformed"/>
+                  </Events>
+                </MenuItem>
+                <MenuItem class="javax.swing.JMenuItem" name="rep_op2">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Investigadores con m&#xe1;s casos atendidos"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="rep_op2ActionPerformed"/>
+                  </Events>
+                </MenuItem>
+                <MenuItem class="javax.swing.JMenuItem" name="rep_op3">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Casos con m&#xe1;s de 3 casos relacionados"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="rep_op3ActionPerformed"/>
+                  </Events>
+                </MenuItem>
+              </SubComponents>
+            </Menu>
           </SubComponents>
         </Menu>
         <Menu class="javax.swing.JMenu" name="jMenu3">
@@ -95,6 +124,9 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Personal amonestado"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="amonestadosActionPerformed"/>
+              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="robos">
               <Properties>

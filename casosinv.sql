@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost
--- Tiempo de generación: 31-10-2013 a las 21:50:41
+-- Tiempo de generación: 04-11-2013 a las 05:28:33
 -- Versión del servidor: 5.5.24-log
 -- Versión de PHP: 5.4.3
 
@@ -29,6 +29,7 @@ SET time_zone = "+00:00";
 CREATE TABLE IF NOT EXISTS `casos_de_investigacion` (
   `nro_expediente` int(11) NOT NULL AUTO_INCREMENT,
   `investigador` varchar(50) NOT NULL DEFAULT '-',
+  `cedula_investigador` int(11) NOT NULL DEFAULT '0',
   `fecha_inicio` date NOT NULL,
   `dias` int(11) NOT NULL,
   `mes` int(11) NOT NULL,
@@ -49,30 +50,24 @@ CREATE TABLE IF NOT EXISTS `casos_de_investigacion` (
   `observaciones` varchar(500) NOT NULL DEFAULT '-',
   `soporte` varchar(50) NOT NULL DEFAULT '-',
   `estado` varchar(50) NOT NULL DEFAULT '-',
-  PRIMARY KEY (`nro_expediente`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=19 ;
+  PRIMARY KEY (`nro_expediente`),
+  KEY `cedula_investigador` (`cedula_investigador`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=18 ;
 
 --
 -- Volcado de datos para la tabla `casos_de_investigacion`
 --
 
-INSERT INTO `casos_de_investigacion` (`nro_expediente`, `investigador`, `fecha_inicio`, `dias`, `mes`, `movil_afectado`, `tipo_de_caso`, `tipo_de_irregularidad`, `subtipo_de_irregularidad`, `objetivo_agraviado`, `incidencia`, `duracion`, `descripcion`, `area_apoyo`, `deteccion_procedencia`, `diagnostico_detalle`, `actuaciones_acciones`, `conclusiones`, `recomendaciones`, `observaciones`, `soporte`, `estado`) VALUES
-(1, 'Pedro Perez', '2013-10-10', 15, 10, '4146627711', 'Fraude', 'Detección de Brecha en Proceso', 'Activación de Líneas', 'Maria Perez', 'Activación de línea fraudulenta', 15, '', 'Investigación', '', '', 'Apertura de caso CICCPO', '', '', '', '', 'Asignado'),
-(2, 'Juan da silva', '2013-10-01', 25, 10, '4165421876', 'Investigación', 'Detección de Brecha en Proceso', 'Activación de Sevicios', 'Josefina Armas', 'Activación de servicios repetidos ', 15, '', 'Investigación', '', '', 'Apertura de caso CICCPO', '', '', '', '', 'Asignado'),
-(3, 'Jenifer Rodriguez', '2013-09-25', 30, 9, '4125526771', 'Robo', 'Liberación de Serial', 'Aplicación de Ajustes', 'Maria Villas', 'Duplicación de serial', 15, '', 'TI', '', '', 'Suspender la línea', '', '', '', '', 'Abierto'),
-(4, 'John Rivas', '2013-09-08', 45, 9, '4145556277', 'Fraude', 'Hurto Robo', 'Cambio de Datos', 'Jose Armas', 'Hurto de línea de dados', 45, '', 'TI', '', '', 'Suspender la línea', '', '', '', '', 'Cerrado'),
-(5, 'Keila Gonzalez', '2013-09-01', 55, 9, '4145515551', 'Fraude', 'Hurto Robo', 'Cambio de Movil', 'Jacky Perozo', 'Hurto de línea de voz', 55, '', 'TI', '', '', 'Suspender la línea', '', '', '', '', 'Negado'),
-(6, '-', '2013-10-01', 20, 15, '4169330111', 'Robo', 'Activación de Servicios', 'Activación de Líneas', 'Manuel Fuentes', 'Activación de Línea Fraudulenta', 30, 'dsgdngkdmnbxdnbkdsbmnknzñlbnzkngsjogrje', 'TI', 'sfsafbobfoiawtiinatw', 'lkastehnpohjreoysngznghosjrgohjsyjosjyh', 'Suspender la Línea', '-', '-', '-', '-', 'Seguimiento'),
-(7, '-', '2013-11-12', 20, 11, '4142657896', 'Investigación', 'Estafa', 'Cambio de Plan', 'dsgdsgdsg', 'Duplicación de Serial', 30, 'dsgdfgdsgsd', 'TI', 'dsgdsgdsgds', 'gdsgsdgdsg', 'Suspender la Línea', '-', '-', '-', 'dsgdsgdsg', 'Asignado'),
-(8, '-', '2013-12-01', 5, 30, '4144552396', 'Investigación', 'Hurto - Robo', 'Canjes de Puntos', 'dtretryesz', 'Duplicación de Serial', 20, 'hdgfhdfghdfgh\ndsgsgfsh', 'TI', 'sdfsfsffdsg', 'shshdfsh\ndfhshfdshncvn\nhsdhsdhdash', 'Suspender la Línea', '-', '-', '-', 'dtretryesz', 'Asignado'),
-(9, '-', '2013-12-16', 20, 20, '', 'Investigación', 'Activación de Servicios', 'Activación de Líneas', '', '', 20, '', '', '', '', '', '-', '-', '-', '', 'Asignado'),
-(10, '-', '2013-12-01', 20, 12, '4142654789', 'Investigación', 'Hurto - Robo', 'Equipos Celulares', 'Corina', 'Hurto de Línea de Datos', 15, 'dudufjvbngjghfk\nhñmhmdgfpkjd\nfñhpmfkjkkjd', 'TI', 'gfhfjfjf', 'dfñlmgdgpodjh\nljhodfjhjd\nlfhojhojdy', 'Suspender la línea', '-', '-', '-', 'erwedfgdfghtry', 'Asignado'),
-(11, '-', '2013-11-10', 10, 11, '4142365898', 'Robo', 'Activación de Servicios', 'Activación de Líneas', 'pepe', 'Duplicación de Serial', 30, 'gdsgdsfgdsg', 'TI', 'dfgsdgdsgsd', 'dfgdfgdsgf', 'Suspender Línea', '-', '-', '-', 'dfsgdfsgfdg', 'Asignado'),
-(12, '-', '2013-01-01', 2, 1, '4142365897', 'Robo', 'Activación de Servicios', 'Activación de Líneas', 'Elver', 'Hurto de Línea de Datos', 32, 'hdhfhfhfhdfhd\nlsmgjmjmroyjoejry', 'TI', 'dfhdfhdshstju', 'rlyjojojyihspigdjesoy\nlsyjrsojyp`rjeyjres\n`tpkyp`rtkukir0u', 'Suspender la Línea', '-', '-', '-', 'stryrtueu', 'Asignado'),
-(13, '-', '2013-01-01', 2, 1, '4142365897', 'Robo', 'Activación de Servicios', 'Activación de Líneas', 'Elver', 'Hurto de Línea de Datos', 32, 'hdhfhfhfhdfhd\nlsmgjmjmroyjoejry', 'TI', 'dfhdfhdshstju', 'rlyjojojyihspigdjesoy\nlsyjrsojyp`rjeyjres\n`tpkyp`rtkukir0u', 'Suspender la Línea', '-', '-', '-', 'stryrtueu', 'Asignado'),
-(14, '-', '2013-01-01', 14, 25, '4142365897', 'Robo', 'Activación de Servicios', 'Activación de Líneas', 'Elver', 'Hurto de Línea de Datos', 45, 'yysyresyre', 'TI', 'ryeyreyure', 'yreyrertyrty', 'Suspender la Línea', '-', '-', '-', 'rtyrtyt7u67', 'Asignado'),
-(15, '-', '1991-12-11', 34, 21, '4142569863', 'Robo', 'Activación de Servicios', 'Activación de Líneas', 'sdfdsbfkhnskihgf', 'gdsdsgsd', 5354, 'dshdfhdfsh', 'dfsgdsgdsg', 'gsdgfdsg', 'dshfdhdshds', 'dfsgdsgdsg', '-', '-', '-', 'hdshhfh', 'Asignado'),
-(16, '-', '2013-01-01', 2, 1, '4142356987', 'Robo', 'Activación de Servicios', 'Activación de Líneas', 'dstgrsetet', 'dfghdfhrty', 32, 'tyrturtu', 'dfsyryutrurty', 'dtirtiytuy', 'rtututru', 'dfsyrysryresy', '-', '-', '-', 'tururutru', 'Asignado');
+INSERT INTO `casos_de_investigacion` (`nro_expediente`, `investigador`, `cedula_investigador`, `fecha_inicio`, `dias`, `mes`, `movil_afectado`, `tipo_de_caso`, `tipo_de_irregularidad`, `subtipo_de_irregularidad`, `objetivo_agraviado`, `incidencia`, `duracion`, `descripcion`, `area_apoyo`, `deteccion_procedencia`, `diagnostico_detalle`, `actuaciones_acciones`, `conclusiones`, `recomendaciones`, `observaciones`, `soporte`, `estado`) VALUES
+(1, 'Pedro Perez', 15236899, '2013-10-10', 15, 10, '4146627711', 'Fraude', 'Detección de Brecha en Proceso', 'Activación de Líneas', 'Maria Perez', 'Activación de línea fraudulenta', 15, '', 'Investigación', '', '', 'Apertura de caso CICCPO', '', '', '', '', 'Asignado'),
+(2, 'Juan da silva', 16544789, '2013-10-01', 25, 10, '4165421876', 'Investigación', 'Detección de Brecha en Proceso', 'Activación de Sevicios', 'Josefina Armas', 'Activación de servicios repetidos ', 15, '', 'Investigación', '', '', 'Apertura de caso CICCPO', '', '', '', '', 'Asignado'),
+(3, 'Pedro Perez', 15236889, '2013-09-25', 30, 9, '4125526771', 'Robo', 'Liberación de Serial', 'Aplicación de Ajustes', 'Maria Villas', 'Duplicación de serial', 15, '', 'TI', '', '', 'Suspender la línea', '', '', 'lo que sea', '', 'Negado'),
+(4, 'John Rivas', 14544892, '2013-09-08', 45, 9, '4145556277', 'Fraude', 'Hurto Robo', 'Cambio de Datos', 'Jose Armas', 'Hurto de línea de dados', 45, '', 'TI', '', '', 'Suspender la línea', '', '', '', '', 'Cerrado'),
+(5, 'Daniel Gonzalez', 15247896, '2013-09-01', 55, 9, '4145515551', 'Fraude', 'Hurto Robo', 'Cambio de Movil', 'Jacky Perozo', 'Hurto de línea de voz', 55, '', 'TI', '', '', 'Suspender la línea', '', '', '', '', 'Negado'),
+(6, 'Fred Rivas', 18593321, '2013-10-01', 20, 15, '4169330111', 'Fraude', 'Activación de Servicios', 'Activación de Líneas', 'Manuel Fuentes', 'Activación de Línea Fraudulenta', 30, 'dsgdngkdmnbxdnbkdsbmnknzñlbnzkngsjogrje', 'TI', 'sfsafbobfoiawtiinatw', 'lkastehnpohjreoysngznghosjrgohjsyjosjyh', 'Suspender la Línea', '53535346', '34634636', '2142323532', '-', 'Seguimiento'),
+(7, 'Pepito Garcia', 18439576, '2013-11-12', 20, 11, '4142657896', 'Investigación', 'Estafa', 'Cambio de Plan', 'dsgdsgdsg', 'Duplicación de Serial', 100, 'dsgdfgdsgsd', 'TI', 'dsgdsgdsgds', 'gdsgsdgdsg', 'Suspender la Línea', '4754756754', '87659679', '42353654657', 'dsgdsgdsg', 'Cerrado'),
+(8, 'Lili del valle', 19372462, '2013-12-01', 5, 30, '4144552396', 'Investigación', 'Hurto - Robo', 'Canjes de Puntos', 'dtretryesz', 'Duplicación de Serial', 20, 'hdgfhdfghdfgh\ndsgsgfsh', 'TI', 'sdfsfsffdsg', 'shshdfsh\ndfhshfdshncvn\nhsdhsdhdash', 'Suspender la Línea', 'ityityityirti', 'rtyitityritirty', 'jgfjghfityity', 'dtretryesz', 'Cerrado'),
+(9, 'Pepe Gonzales', 10258741, '2013-12-16', 20, 20, '', 'Investigación', 'Activación de Servicios', 'Activación de Líneas', '', '', 20, '', '', '', '', '', '-', '-', '-', '', 'Negado');
 
 -- --------------------------------------------------------
 
@@ -89,6 +84,43 @@ CREATE TABLE IF NOT EXISTS `equipo_robado` (
   PRIMARY KEY (`nro_expediente`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Volcado de datos para la tabla `equipo_robado`
+--
+
+INSERT INTO `equipo_robado` (`nro_expediente`, `serial`, `tipo_equipo`, `marca`, `modelo`) VALUES
+(3, '2142343534', 'celular', 'marca123', 'modelo123');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `investigador`
+--
+
+CREATE TABLE IF NOT EXISTS `investigador` (
+  `cedula` int(11) NOT NULL,
+  `nombre` varchar(50) NOT NULL,
+  `apellido` varchar(50) NOT NULL,
+  `empresa` varchar(50) NOT NULL,
+  PRIMARY KEY (`cedula`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `investigador`
+--
+
+INSERT INTO `investigador` (`cedula`, `nombre`, `apellido`, `empresa`) VALUES
+(10258741, 'Pepe', 'Gonzales', 'Los investigadores'),
+(14544892, 'John', 'Rivas', 'Los investigadores'),
+(14789654, 'Jorge', 'de la cruz', 'AltaVista'),
+(15236899, 'Pedro', 'Perez', 'Resuelve todo'),
+(15247896, 'Daniel', 'Gonzalez', 'Busca respuestas'),
+(16544789, 'Juan', 'da silva', 'Los investigadores'),
+(18439576, 'Pepito', 'Lopez', 'Busca respuestas'),
+(18500247, 'Jorge', 'dos santos', 'UCV'),
+(18593321, 'Fred', 'Rivas', 'Los investigadores'),
+(19372462, 'Lili', 'del valle', 'Busca respuestas');
+
 -- --------------------------------------------------------
 
 --
@@ -102,6 +134,13 @@ CREATE TABLE IF NOT EXISTS `seguimiento_fraude` (
   `monto` float NOT NULL DEFAULT '0',
   PRIMARY KEY (`nro_expediente`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `seguimiento_fraude`
+--
+
+INSERT INTO `seguimiento_fraude` (`nro_expediente`, `actividades`, `personas`, `monto`) VALUES
+(6, 'hgfjgjgfj', 'ghjgfhj', 50.55);
 
 --
 -- Restricciones para tablas volcadas
