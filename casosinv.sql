@@ -2,10 +2,10 @@
 -- version 3.5.1
 -- http://www.phpmyadmin.net
 --
--- Servidor: localhost
--- Tiempo de generación: 04-11-2013 a las 05:28:33
--- Versión del servidor: 5.5.24-log
--- Versión de PHP: 5.4.3
+-- Host: localhost
+-- Generation Time: Nov 06, 2013 at 03:15 AM
+-- Server version: 5.5.24-log
+-- PHP Version: 5.4.3
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -17,13 +17,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8 */;
 
 --
--- Base de datos: `casosinv`
+-- Database: `casosinv`
 --
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `casos_de_investigacion`
+-- Table structure for table `casos_de_investigacion`
 --
 
 CREATE TABLE IF NOT EXISTS `casos_de_investigacion` (
@@ -55,7 +55,7 @@ CREATE TABLE IF NOT EXISTS `casos_de_investigacion` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=18 ;
 
 --
--- Volcado de datos para la tabla `casos_de_investigacion`
+-- Dumping data for table `casos_de_investigacion`
 --
 
 INSERT INTO `casos_de_investigacion` (`nro_expediente`, `investigador`, `cedula_investigador`, `fecha_inicio`, `dias`, `mes`, `movil_afectado`, `tipo_de_caso`, `tipo_de_irregularidad`, `subtipo_de_irregularidad`, `objetivo_agraviado`, `incidencia`, `duracion`, `descripcion`, `area_apoyo`, `deteccion_procedencia`, `diagnostico_detalle`, `actuaciones_acciones`, `conclusiones`, `recomendaciones`, `observaciones`, `soporte`, `estado`) VALUES
@@ -72,7 +72,7 @@ INSERT INTO `casos_de_investigacion` (`nro_expediente`, `investigador`, `cedula_
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `equipo_robado`
+-- Table structure for table `equipo_robado`
 --
 
 CREATE TABLE IF NOT EXISTS `equipo_robado` (
@@ -85,7 +85,7 @@ CREATE TABLE IF NOT EXISTS `equipo_robado` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Volcado de datos para la tabla `equipo_robado`
+-- Dumping data for table `equipo_robado`
 --
 
 INSERT INTO `equipo_robado` (`nro_expediente`, `serial`, `tipo_equipo`, `marca`, `modelo`) VALUES
@@ -94,7 +94,7 @@ INSERT INTO `equipo_robado` (`nro_expediente`, `serial`, `tipo_equipo`, `marca`,
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `investigador`
+-- Table structure for table `investigador`
 --
 
 CREATE TABLE IF NOT EXISTS `investigador` (
@@ -106,7 +106,7 @@ CREATE TABLE IF NOT EXISTS `investigador` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Volcado de datos para la tabla `investigador`
+-- Dumping data for table `investigador`
 --
 
 INSERT INTO `investigador` (`cedula`, `nombre`, `apellido`, `empresa`) VALUES
@@ -124,7 +124,21 @@ INSERT INTO `investigador` (`cedula`, `nombre`, `apellido`, `empresa`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `seguimiento_fraude`
+-- Table structure for table `personal_administrativo`
+--
+
+CREATE TABLE IF NOT EXISTS `personal_administrativo` (
+  `cedula` int(11) NOT NULL,
+  `nombre` varchar(50) NOT NULL,
+  `apellido` varchar(50) NOT NULL,
+  `Nota` text NOT NULL,
+  UNIQUE KEY `cedula` (`cedula`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `seguimiento_fraude`
 --
 
 CREATE TABLE IF NOT EXISTS `seguimiento_fraude` (
@@ -136,24 +150,24 @@ CREATE TABLE IF NOT EXISTS `seguimiento_fraude` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Volcado de datos para la tabla `seguimiento_fraude`
+-- Dumping data for table `seguimiento_fraude`
 --
 
 INSERT INTO `seguimiento_fraude` (`nro_expediente`, `actividades`, `personas`, `monto`) VALUES
 (6, 'hgfjgjgfj', 'ghjgfhj', 50.55);
 
 --
--- Restricciones para tablas volcadas
+-- Constraints for dumped tables
 --
 
 --
--- Filtros para la tabla `equipo_robado`
+-- Constraints for table `equipo_robado`
 --
 ALTER TABLE `equipo_robado`
   ADD CONSTRAINT `equipo_robado_ibfk_2` FOREIGN KEY (`nro_expediente`) REFERENCES `casos_de_investigacion` (`nro_expediente`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Filtros para la tabla `seguimiento_fraude`
+-- Constraints for table `seguimiento_fraude`
 --
 ALTER TABLE `seguimiento_fraude`
   ADD CONSTRAINT `seguimiento_fraude_ibfk_2` FOREIGN KEY (`nro_expediente`) REFERENCES `casos_de_investigacion` (`nro_expediente`) ON DELETE CASCADE ON UPDATE CASCADE;
