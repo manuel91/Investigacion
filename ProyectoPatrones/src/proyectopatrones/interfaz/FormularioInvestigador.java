@@ -17,7 +17,7 @@ public class FormularioInvestigador extends javax.swing.JFrame {
     private Statement stmt;
     private ResultSet res;
     private Administrador admin;
-    private String ci;
+    private boolean flag;
     /**
      * Creates new form FormularioRegistro
      */
@@ -25,26 +25,12 @@ public class FormularioInvestigador extends javax.swing.JFrame {
         initComponents();
     }
     
-    public FormularioInvestigador(Administrador admin, String ci) {
+    public FormularioInvestigador(Administrador admin, boolean flag) {
         initComponents();
         this.admin = admin;
-        this.ci = ci;
-        if(ci!=null){
-            title.setText("Personal Amonestado");
-            enviar.setText("Modificar");
-            try{
-                stmt = admin.con.createStatement();
-                res = stmt.executeQuery("select * from investigador where cedula = "+ci);
-                
-                while(res.next()){
-                    cedula.setText(res.getString(1));
-                    nombre.setText(res.getString(2));
-                    apellido.setText(res.getString(3));
-                    empresa.setText(res.getString(4));
-                }
-            } 
-            catch (SQLException e) { e.printStackTrace();  }
-        }
+        this.flag = flag;
+        if(!flag)
+            title.setText("Registrar Personal");
     }
 
     /**
@@ -187,10 +173,11 @@ public class FormularioInvestigador extends javax.swing.JFrame {
         datos[2] = apellido.getText();
         datos[3] = empresa.getText();
         
-        if(ci!=null)
-            admin.ManejarPersonalAmonestado(datos, ci);
-        else
+        if(flag)
             admin.RegistrarInvestigador(datos);
+        else
+            admin.RegistrarPersonal(datos);
+        
         this.setVisible(false);
     }//GEN-LAST:event_enviarActionPerformed
 

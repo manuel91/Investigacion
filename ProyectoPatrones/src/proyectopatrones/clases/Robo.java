@@ -68,8 +68,8 @@ public class Robo extends Caso_de_Investigacion{
             ps.setString(16, soporte);
             ps.setString(17, estado);
             
-            int aux1 = ps.executeUpdate();
-            if(aux1>0){
+            int aux = ps.executeUpdate();
+            /*if(aux1>0){
                 Statement stmt = con.createStatement();
                 ResultSet res;
                 res = stmt.executeQuery("select nro_expediente from casos_de_investigacion order by nro_expediente desc limit 1");
@@ -85,7 +85,8 @@ public class Robo extends Caso_de_Investigacion{
                 int aux2 = ps.executeUpdate();
 
                 if(aux2>0) JOptionPane.showMessageDialog(null, "Datos Guardados Exitosamete"); 
-            }
+            }*/
+            if(aux>0) JOptionPane.showMessageDialog(null, "Datos Guardados Exitosamete");
         }
         catch(Exception e){ JOptionPane.showMessageDialog(null, "Error" + e.getMessage()); }
     }

@@ -4,7 +4,9 @@
  */
 package proyectopatrones.clases;
 
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import javax.swing.JOptionPane;
 import proyectopatrones.clases.Usuario;
 
@@ -18,6 +20,15 @@ public class Administrador extends Usuario {
         creadorI = new RegistrarInvestigacion();
         creadorR = new RegistrarRobo();
         creadorF = new RegistrarFraude();
+        try{
+            Class.forName("com.mysql.jdbc.Driver");
+            con = DriverManager.getConnection("jdbc:mysql://localhost/CasosInv", "root", "");
+        }
+        /**** Excepción que se dispara si falla la carga del driver ****/
+        catch( ClassNotFoundException e ) { e.printStackTrace();  }
+        
+       /**** Excepción que se dispara si falla la conexión *****/
+        catch ( SQLException e) { e.printStackTrace();  }
     }
     
     public void RegistrarInvestigador(String[] datos){
@@ -64,7 +75,7 @@ public class Administrador extends Usuario {
     
     
     public void ManejarPersonalAmonestado(String[] datos, String ci){
-        try{
+        /*try{
             String sql = "update investigador set cedula = ?, nombre = ?, apellido = ?, empresa = ? where cedula = ?";
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, datos[0]);
@@ -84,11 +95,11 @@ public class Administrador extends Usuario {
                 if(aux2>0) JOptionPane.showMessageDialog(null, "Datos Guardados Exitosamete");
             } 
             
-        } catch(Exception e){ JOptionPane.showMessageDialog(null, "Error" + e.getMessage()); }
+        } catch(Exception e){ JOptionPane.showMessageDialog(null, "Error" + e.getMessage()); }*/
     }
     
     public void ManejarEquiposRobados(String[] datos){
-        try{
+       /* try{
             String sql = "update equipo_robado set serial = ?, tipo_equipo = ?, marca = ?, modelo = ? where nro_expediente = ?";
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, datos[0]);
@@ -109,9 +120,75 @@ public class Administrador extends Usuario {
             } 
             
         } catch(Exception e){ JOptionPane.showMessageDialog(null, "Error" + e.getMessage()); }
-        
+        */
+    }
+    
+    public void RegistrarEquiposRobados(String[] datos){
+        try{
+            String sql = "insert into equipo_robado (nro_expediente, serial, tipo_equipo, marca, modelo, observaciones) values (?,?,?,?,?,?)";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, datos[5]);
+            ps.setString(2, datos[0]);
+            ps.setString(3, datos[1]);
+            ps.setString(4, datos[2]);
+            ps.setString(5, datos[3]);
+            ps.setString(6, datos[4]);
+            
+            int aux = ps.executeUpdate();
+
+            if(aux>0) JOptionPane.showMessageDialog(null, "Datos Guardados Exitosamete");
+            
+        } catch(Exception e){ JOptionPane.showMessageDialog(null, "Error" + e.getMessage()); }
+    }
+    
+    public void RegistrarPersonal(String[] datos){
+        try{
+            String sql = "insert into personal (cedula, nombre, apellido, empresa) values (?,?,?,?)";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, datos[0]);
+            ps.setString(2, datos[1]);
+            ps.setString(3, datos[2]);
+            ps.setString(4, datos[3]);
+            int aux = ps.executeUpdate();
+            if(aux>0){
+                JOptionPane.showMessageDialog(null, "Datos Guardados Exitosamete");
+            } 
+        } catch(Exception e){ JOptionPane.showMessageDialog(null, "Error" + e.getMessage()); }
+    }
+    
+    public void AsignarPersonal(String[] datos){
+        try{
+            String sql = "insert into personal_casos (nro_expediente, cedula) values (?,?)";
+            PreparedStatement ps = con.prepareStatement(sql);   
+            ps.setString(1, datos[2]);
+            ps.setString(2, datos[0]);
+            int aux = ps.executeUpdate();
+            if(aux>0){
+                JOptionPane.showMessageDialog(null, "Datos Guardados Exitosamete");
+            }
+            
+        } catch(Exception e){ JOptionPane.showMessageDialog(null, "Error" + e.getMessage()); }
+    }
+    
+    public void AmonestarPersonal(String ci){
+          try{
+            String sql = "update personal set amonestado=1 where cedula="+ci;
+            PreparedStatement ps = con.prepareStatement(sql);   
+            
+            int aux = ps.executeUpdate();
+            if(aux>0){
+                JOptionPane.showMessageDialog(null, "Personal amonestado Exitosamete");
+            }
+            
+        } catch(Exception e){ JOptionPane.showMessageDialog(null, "Error" + e.getMessage()); }
+    
     }
     
     public void EmitirReporte(){}
     
+    public void CloseCon(){
+        try{
+            con.close();
+        }catch ( SQLException e) { e.printStackTrace();  }
+    }
 }

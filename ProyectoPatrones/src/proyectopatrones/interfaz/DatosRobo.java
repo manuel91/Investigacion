@@ -30,25 +30,6 @@ public class DatosRobo extends javax.swing.JFrame {
         initComponents();
         this.admin = admin;
         this.id = id;
-        
-        try{
-            stmt = admin.con.createStatement();
-            res = stmt.executeQuery("select serial, tipo_equipo, marca, modelo from equipo_robado where nro_expediente = "+id);
-            
-            while(res.next()){
-                serial.setText(res.getString(1));
-                tipo.setText(res.getString(2));
-                marca.setText(res.getString(3));
-                modelo.setText(res.getString(4));
-            }
-            
-            res = stmt.executeQuery("select observaciones from casos_de_investigacion where nro_expediente = "+id);
-            
-            while(res.next()){
-                observaciones.setText(res.getString(1));
-            }
-            
-        } catch (SQLException e) { e.printStackTrace();  }
     }
 
     /**
@@ -79,7 +60,7 @@ public class DatosRobo extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel1.setText("Datos Robo");
+        jLabel1.setText("Datos Equipo Robado");
 
         jLabel2.setText("Serial");
 
@@ -114,18 +95,14 @@ public class DatosRobo extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(134, 134, 134)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(cerrar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(enviar))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                 .addGap(0, 0, Short.MAX_VALUE)
@@ -140,12 +117,14 @@ public class DatosRobo extends javax.swing.JFrame {
                                     .addComponent(jLabel2))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(serial, javax.swing.GroupLayout.DEFAULT_SIZE, 217, Short.MAX_VALUE)
-                                .addComponent(tipo)
-                                .addComponent(marca)
-                                .addComponent(modelo))
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(serial, javax.swing.GroupLayout.DEFAULT_SIZE, 217, Short.MAX_VALUE)
+                                    .addComponent(tipo)
+                                    .addComponent(marca)
+                                    .addComponent(modelo))))))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -213,7 +192,7 @@ public class DatosRobo extends javax.swing.JFrame {
         datos[4] = observaciones.getText();
         datos[5] = id;
         
-        admin.ManejarEquiposRobados(datos);
+        admin.RegistrarEquiposRobados(datos);
         this.setVisible(false);
     }//GEN-LAST:event_enviarActionPerformed
 

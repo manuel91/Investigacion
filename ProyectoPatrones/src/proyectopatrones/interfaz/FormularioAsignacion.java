@@ -23,6 +23,8 @@ public class FormularioAsignacion extends javax.swing.JFrame {
     private DefaultTableModel model;
     private Administrador admin;
     private String id;
+    private boolean flag;
+    
     /**
      * Creates new form FormularioInvestigador
      */
@@ -30,13 +32,21 @@ public class FormularioAsignacion extends javax.swing.JFrame {
         initComponents();
     }
     
-    public FormularioAsignacion(Administrador admin, String id) {
+    public FormularioAsignacion(Administrador admin, String id, boolean flag) {
         initComponents();
         this.admin = admin;
         this.id = id;
+        this.flag = flag;
         try{
             stmt = admin.con.createStatement();
-            res = stmt.executeQuery("select * from investigador");
+            
+            if(flag)
+                res = stmt.executeQuery("select * from investigador where cedula not in (select cedula_investigador from casos_de_investigacion where nro_expediente = "+id+")");
+            else{
+                title.setText("Seleccione el personal");
+                res = stmt.executeQuery("select * from personal where amonestado!=1 and cedula not in (select cedula from personal_casos where nro_expediente = "+id+")");
+            }
+            
             String titulos[] = {"Cédula", "Nombre", "Apellido", "Empresa"};
             model = new DefaultTableModel(null, titulos);
             
@@ -65,7 +75,7 @@ public class FormularioAsignacion extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
+        title = new javax.swing.JLabel();
         asignar = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         investigadores = new javax.swing.JTable();
@@ -73,8 +83,8 @@ public class FormularioAsignacion extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel1.setText("Seleccione a un investigador");
+        title.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        title.setText("Seleccione a un investigador");
 
         asignar.setText("Asignar");
         asignar.addActionListener(new java.awt.event.ActionListener() {
@@ -108,26 +118,25 @@ public class FormularioAsignacion extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(cerrar)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(asignar))
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 466, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap())
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jLabel1)
-                        .addGap(154, 154, 154))))
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 466, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(144, 144, 144)
+                        .addComponent(title)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(title, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -164,7 +173,11 @@ public class FormularioAsignacion extends javax.swing.JFrame {
             datos[1] = nombre+" "+apellido;
             datos[2] = id;
 
-            admin.AsignarInvestigador(datos);
+            if(flag)
+                admin.AsignarInvestigador(datos);
+            else
+                admin.AsignarPersonal(datos);
+            
             this.setVisible(false);
         }else{
             JOptionPane.showMessageDialog(null, "Error: no ha sido seleccionado a un investigador");
@@ -220,8 +233,8 @@ public class FormularioAsignacion extends javax.swing.JFrame {
     private javax.swing.JButton asignar;
     private javax.swing.JButton cerrar;
     private javax.swing.JTable investigadores;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JLabel title;
     // End of variables declaration//GEN-END:variables
 }
