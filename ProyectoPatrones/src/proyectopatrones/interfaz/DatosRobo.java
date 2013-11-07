@@ -18,6 +18,7 @@ public class DatosRobo extends javax.swing.JFrame {
     private ResultSet res;
     private Administrador admin;
     private String id;
+    private String reg;
     
     /**
      * Creates new form algo
@@ -26,10 +27,27 @@ public class DatosRobo extends javax.swing.JFrame {
         initComponents();
     }
     
-    public DatosRobo(Administrador admin, String id) {
+    public DatosRobo(Administrador admin, String id, String reg){
         initComponents();
         this.admin = admin;
         this.id = id;
+        this.reg = reg;
+        
+        if(reg != null){
+            try{
+                stmt = admin.con.createStatement();
+                res = stmt.executeQuery("select * from equipo_robado where nro_registro = "+reg);
+
+            while (res.next()){
+               serial.setText(res.getString(3));
+               tipo.setText(res.getString(4));
+               marca.setText(res.getString(5));
+               modelo.setText(res.getString(6));
+               observaciones.setText(res.getString(7));
+            }
+            }catch ( SQLException e) { e.printStackTrace();  }
+        }
+        
     }
 
     /**
@@ -192,7 +210,7 @@ public class DatosRobo extends javax.swing.JFrame {
         datos[4] = observaciones.getText();
         datos[5] = id;
         
-        admin.RegistrarEquiposRobados(datos);
+        admin.ManejarEquiposRobados(datos, reg, false);
         this.setVisible(false);
     }//GEN-LAST:event_enviarActionPerformed
 

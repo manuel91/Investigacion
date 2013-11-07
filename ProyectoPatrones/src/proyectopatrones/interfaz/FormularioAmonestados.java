@@ -21,7 +21,7 @@ public class FormularioAmonestados extends javax.swing.JFrame {
     private Administrador admin;
     private Statement stmt;
     private ResultSet res;
-    
+    private boolean flag;
     private DefaultListModel l1;
     private DefaultListModel l2;
     private String id;
@@ -31,17 +31,28 @@ public class FormularioAmonestados extends javax.swing.JFrame {
         initComponents();
     }
     
-     public FormularioAmonestados(Administrador admin, String id) {
+     public FormularioAmonestados(Administrador admin, String id, boolean flag) {
         initComponents();
         this.admin=admin;
         this.id=id;
+        this.flag = flag;
+        
         try{
             stmt = admin.con.createStatement();
             
             l1 = new DefaultListModel();
             l2 = new DefaultListModel();
             
-            res=stmt.executeQuery("select * from personal where amonestado!=1 and cedula in (select cedula from personal_casos where nro_expediente= "+id+" )");
+            if(!flag){
+                res=stmt.executeQuery("select * from personal where amonestado = 1 and cedula in (select cedula from personal_casos where nro_expediente= "+id+" )");
+                header0.setText("Seleccione el personal para suspender amonestación");
+                header1.setText("Amonestados");
+                header2.setText("Personal");
+            }
+            else
+                res=stmt.executeQuery("select * from personal where amonestado = 0 and cedula in (select cedula from personal_casos where nro_expediente= "+id+" )");  
+            
+            
             while(res.next()){
                 l1.addElement(res.getString(2)+" "+res.getString(3)+" - "+res.getString(1)+" - "+res.getString(4));
             }
@@ -61,15 +72,15 @@ public class FormularioAmonestados extends javax.swing.JFrame {
         jRadioButtonMenuItem1 = new javax.swing.JRadioButtonMenuItem();
         jMenuItem1 = new javax.swing.JMenuItem();
         jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        header1 = new javax.swing.JLabel();
+        header2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         lista_personal = new javax.swing.JList();
         jScrollPane2 = new javax.swing.JScrollPane();
         Lista_amonestado = new javax.swing.JList();
         add = new javax.swing.JButton();
-        amonestar = new javax.swing.JButton();
-        jLabel3 = new javax.swing.JLabel();
+        aplicar = new javax.swing.JButton();
+        header0 = new javax.swing.JLabel();
         cerrar = new javax.swing.JButton();
         back = new javax.swing.JButton();
 
@@ -80,11 +91,11 @@ public class FormularioAmonestados extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel1.setText("Personal");
+        header1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        header1.setText("Personal");
 
-        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel2.setText("Amonestado");
+        header2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        header2.setText("Amonestado");
 
         jScrollPane1.setViewportView(lista_personal);
 
@@ -98,15 +109,15 @@ public class FormularioAmonestados extends javax.swing.JFrame {
             }
         });
 
-        amonestar.setText("Amonestar");
-        amonestar.addActionListener(new java.awt.event.ActionListener() {
+        aplicar.setText("Aplicar");
+        aplicar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                amonestarActionPerformed(evt);
+                aplicarActionPerformed(evt);
             }
         });
 
-        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel3.setText("Seleccione el personal que será amonestado ");
+        header0.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        header0.setText("Seleccione el personal que será amonestado ");
 
         cerrar.setText("Cancelar");
         cerrar.addActionListener(new java.awt.event.ActionListener() {
@@ -127,59 +138,59 @@ public class FormularioAmonestados extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel3)
-                .addGap(176, 176, 176))
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(24, 24, 24)
+                .addGap(174, 174, 174)
+                .addComponent(header0)
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(25, 25, 25)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(add, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(back, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(back, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                 .addComponent(cerrar)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(amonestar))
+                                .addComponent(aplicar))
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(26, Short.MAX_VALUE))
+                        .addContainerGap(25, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(75, 75, 75)
-                        .addComponent(jLabel1)
+                        .addComponent(header1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel2)
-                        .addGap(93, 93, 93))))
+                        .addComponent(header2)
+                        .addGap(94, 94, 94))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(14, 14, 14)
+                .addComponent(header0, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(20, 20, 20)
-                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel1))
+                            .addComponent(header2)
+                            .addComponent(header1))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jScrollPane1)
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(29, 29, 29)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(amonestar)
+                            .addComponent(aplicar)
                             .addComponent(cerrar)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(117, 117, 117)
                         .addComponent(add, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(34, 34, 34)
                         .addComponent(back, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(25, 25, 25))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -190,9 +201,7 @@ public class FormularioAmonestados extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -231,20 +240,20 @@ public class FormularioAmonestados extends javax.swing.JFrame {
         }   
     }//GEN-LAST:event_backActionPerformed
 
-    private void amonestarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_amonestarActionPerformed
+    private void aplicarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aplicarActionPerformed
         int j=0;
-        String aux, aux1;
+        String aux1, aux2;
         while(j<l2.getSize()){
-            aux = (String) l2.get(j);
-            StringTokenizer tokens = new StringTokenizer(aux, " - ");
+            aux1 = (String) l2.get(j);
+            StringTokenizer tokens = new StringTokenizer(aux1, " - ");
             tokens.nextToken();
             tokens.nextToken();
-            aux1 = tokens.nextToken();
-            admin.Amonestar(aux1);
+            aux2 = tokens.nextToken();
+            admin.ManejarPersonalAmonestado(aux2, flag);
             j++;
         }
         this.setVisible(false);
-    }//GEN-LAST:event_amonestarActionPerformed
+    }//GEN-LAST:event_aplicarActionPerformed
     
     /**
      * @param args the command line arguments
@@ -290,12 +299,12 @@ public class FormularioAmonestados extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JList Lista_amonestado;
     private javax.swing.JButton add;
-    private javax.swing.JButton amonestar;
+    private javax.swing.JButton aplicar;
     private javax.swing.JButton back;
     private javax.swing.JButton cerrar;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel header0;
+    private javax.swing.JLabel header1;
+    private javax.swing.JLabel header2;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JRadioButtonMenuItem jRadioButtonMenuItem1;

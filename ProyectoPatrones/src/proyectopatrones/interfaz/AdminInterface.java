@@ -34,8 +34,10 @@ public class AdminInterface extends javax.swing.JFrame {
     private FormularioCierre formulario_cierre;
     private FormularioAsignacion formulario_asignacion;
     private FormularioSeguimiento formulario_seguimiento;
-    private FormularioInvestigador formulario_investigador;
+    private FormularioRegistro formulario_registro;
     private FormularioAmonestados formulario_amonestados;
+    private TablaPersona tabla_investigador;
+    private TablaPersona tabla_personal;
     private TablaAmonestados tabla_amonestados;
     private TablaRobos tabla_robos;
     private DatosRobo datos_robo;
@@ -132,31 +134,39 @@ public class AdminInterface extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         refresh = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
+        archivo = new javax.swing.JMenu();
         crear = new javax.swing.JMenuItem();
         abrir = new javax.swing.JMenuItem();
         cerrar = new javax.swing.JMenuItem();
         marcar = new javax.swing.JMenuItem();
+        borrar_caso = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
         salir = new javax.swing.JMenuItem();
-        registro = new javax.swing.JMenu();
-        registrar = new javax.swing.JMenuItem();
+        gestion = new javax.swing.JMenu();
+        gestion_registro = new javax.swing.JMenu();
         personal = new javax.swing.JMenuItem();
-        jMenu2 = new javax.swing.JMenu();
-        asignar_inv = new javax.swing.JMenuItem();
+        investigador = new javax.swing.JMenuItem();
+        gestion_consulta = new javax.swing.JMenu();
+        datos_caso = new javax.swing.JMenuItem();
+        datos_personal = new javax.swing.JMenuItem();
+        datos_investigador = new javax.swing.JMenuItem();
+        accion = new javax.swing.JMenu();
+        asignar = new javax.swing.JMenu();
         asignar_p = new javax.swing.JMenuItem();
-        seguimiento = new javax.swing.JMenuItem();
+        asignar_inv = new javax.swing.JMenuItem();
         reportes = new javax.swing.JMenu();
         rep_op1 = new javax.swing.JMenuItem();
         rep_op2 = new javax.swing.JMenuItem();
         rep_op3 = new javax.swing.JMenuItem();
-        jMenu3 = new javax.swing.JMenu();
-        personal_amonestado = new javax.swing.JMenu();
-        consultar_amonestados = new javax.swing.JMenuItem();
-        amonestar = new javax.swing.JMenuItem();
+        seguimiento = new javax.swing.JMenuItem();
+        manejar = new javax.swing.JMenu();
         info_robo = new javax.swing.JMenu();
         consultar_robados = new javax.swing.JMenuItem();
         equipos_robados = new javax.swing.JMenuItem();
+        personal_amonestado = new javax.swing.JMenu();
+        consultar_amonestados = new javax.swing.JMenuItem();
+        amonestar = new javax.swing.JMenuItem();
+        suspender_amonestacion = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -223,7 +233,7 @@ public class AdminInterface extends javax.swing.JFrame {
                 .addGap(21, 21, 21))
         );
 
-        jMenu1.setText("Archivo");
+        archivo.setText("Archivo");
 
         crear.setText("Crear caso");
         crear.addActionListener(new java.awt.event.ActionListener() {
@@ -231,7 +241,7 @@ public class AdminInterface extends javax.swing.JFrame {
                 crearActionPerformed(evt);
             }
         });
-        jMenu1.add(crear);
+        archivo.add(crear);
 
         abrir.setText("Abrir caso");
         abrir.addActionListener(new java.awt.event.ActionListener() {
@@ -239,7 +249,7 @@ public class AdminInterface extends javax.swing.JFrame {
                 abrirActionPerformed(evt);
             }
         });
-        jMenu1.add(abrir);
+        archivo.add(abrir);
 
         cerrar.setText("Cerrar caso");
         cerrar.addActionListener(new java.awt.event.ActionListener() {
@@ -247,7 +257,7 @@ public class AdminInterface extends javax.swing.JFrame {
                 cerrarActionPerformed(evt);
             }
         });
-        jMenu1.add(cerrar);
+        archivo.add(cerrar);
 
         marcar.setText("Marcar caso");
         marcar.addActionListener(new java.awt.event.ActionListener() {
@@ -255,8 +265,16 @@ public class AdminInterface extends javax.swing.JFrame {
                 marcarActionPerformed(evt);
             }
         });
-        jMenu1.add(marcar);
-        jMenu1.add(jSeparator1);
+        archivo.add(marcar);
+
+        borrar_caso.setText("Borrar caso");
+        borrar_caso.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                borrar_casoActionPerformed(evt);
+            }
+        });
+        archivo.add(borrar_caso);
+        archivo.add(jSeparator1);
 
         salir.setText("Salir");
         salir.addActionListener(new java.awt.event.ActionListener() {
@@ -264,55 +282,83 @@ public class AdminInterface extends javax.swing.JFrame {
                 salirActionPerformed(evt);
             }
         });
-        jMenu1.add(salir);
+        archivo.add(salir);
 
-        jMenuBar1.add(jMenu1);
+        jMenuBar1.add(archivo);
 
-        registro.setText("Registrar");
+        gestion.setText("Gestión");
 
-        registrar.setText("Registrar investigador");
-        registrar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                registrarActionPerformed(evt);
-            }
-        });
-        registro.add(registrar);
+        gestion_registro.setText("Registrar");
 
-        personal.setText("Registrar personal");
+        personal.setText("Personal");
         personal.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 personalActionPerformed(evt);
             }
         });
-        registro.add(personal);
+        gestion_registro.add(personal);
 
-        jMenuBar1.add(registro);
-
-        jMenu2.setText("Acción");
-
-        asignar_inv.setText("Asignar investigador");
-        asignar_inv.addActionListener(new java.awt.event.ActionListener() {
+        investigador.setText("Investigador");
+        investigador.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                asignar_invActionPerformed(evt);
+                investigadorActionPerformed(evt);
             }
         });
-        jMenu2.add(asignar_inv);
+        gestion_registro.add(investigador);
 
-        asignar_p.setText("Asignar personal");
+        gestion.add(gestion_registro);
+
+        gestion_consulta.setText("Consultar");
+
+        datos_caso.setText("Datos Caso");
+        datos_caso.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                datos_casoActionPerformed(evt);
+            }
+        });
+        gestion_consulta.add(datos_caso);
+
+        datos_personal.setText("Datos personal");
+        datos_personal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                datos_personalActionPerformed(evt);
+            }
+        });
+        gestion_consulta.add(datos_personal);
+
+        datos_investigador.setText("Datos investigador");
+        datos_investigador.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                datos_investigadorActionPerformed(evt);
+            }
+        });
+        gestion_consulta.add(datos_investigador);
+
+        gestion.add(gestion_consulta);
+
+        jMenuBar1.add(gestion);
+
+        accion.setText("Acción");
+
+        asignar.setText("Asignar");
+
+        asignar_p.setText("Personal");
         asignar_p.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 asignar_pActionPerformed(evt);
             }
         });
-        jMenu2.add(asignar_p);
+        asignar.add(asignar_p);
 
-        seguimiento.setText("Realizar seguimiento");
-        seguimiento.addActionListener(new java.awt.event.ActionListener() {
+        asignar_inv.setText("Investigador");
+        asignar_inv.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                seguimientoActionPerformed(evt);
+                asignar_invActionPerformed(evt);
             }
         });
-        jMenu2.add(seguimiento);
+        asignar.add(asignar_inv);
+
+        accion.add(asignar);
 
         reportes.setText("Emitir reporte");
 
@@ -340,11 +386,39 @@ public class AdminInterface extends javax.swing.JFrame {
         });
         reportes.add(rep_op3);
 
-        jMenu2.add(reportes);
+        accion.add(reportes);
 
-        jMenuBar1.add(jMenu2);
+        seguimiento.setText("Realizar seguimiento");
+        seguimiento.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                seguimientoActionPerformed(evt);
+            }
+        });
+        accion.add(seguimiento);
 
-        jMenu3.setText("Manejar");
+        jMenuBar1.add(accion);
+
+        manejar.setText("Manejar");
+
+        info_robo.setText("Equipos Robados");
+
+        consultar_robados.setText("Consultar");
+        consultar_robados.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                consultar_robadosActionPerformed(evt);
+            }
+        });
+        info_robo.add(consultar_robados);
+
+        equipos_robados.setText("Reportar robo");
+        equipos_robados.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                equipos_robadosActionPerformed(evt);
+            }
+        });
+        info_robo.add(equipos_robados);
+
+        manejar.add(info_robo);
 
         personal_amonestado.setText("Personal Amonestado");
 
@@ -364,29 +438,17 @@ public class AdminInterface extends javax.swing.JFrame {
         });
         personal_amonestado.add(amonestar);
 
-        jMenu3.add(personal_amonestado);
-
-        info_robo.setText("Equipos Robados");
-
-        consultar_robados.setText("Consultar");
-        consultar_robados.addActionListener(new java.awt.event.ActionListener() {
+        suspender_amonestacion.setText("Suspender Amonestación");
+        suspender_amonestacion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                consultar_robadosActionPerformed(evt);
+                suspender_amonestacionActionPerformed(evt);
             }
         });
-        info_robo.add(consultar_robados);
+        personal_amonestado.add(suspender_amonestacion);
 
-        equipos_robados.setText("Registrar");
-        equipos_robados.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                equipos_robadosActionPerformed(evt);
-            }
-        });
-        info_robo.add(equipos_robados);
+        manejar.add(personal_amonestado);
 
-        jMenu3.add(info_robo);
-
-        jMenuBar1.add(jMenu3);
+        jMenuBar1.add(manejar);
 
         setJMenuBar(jMenuBar1);
 
@@ -407,7 +469,7 @@ public class AdminInterface extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void crearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_crearActionPerformed
-        formulario_casos = new FormularioCasos(admin, 1);
+        formulario_casos = new FormularioCasos(admin, 1, null);
         formulario_casos.setVisible(true);
     }//GEN-LAST:event_crearActionPerformed
 
@@ -428,9 +490,7 @@ public class AdminInterface extends javax.swing.JFrame {
 
     private void salirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salirActionPerformed
         this.setVisible(false);
-        try {
-            admin.con.close();
-        } catch ( SQLException e) { e.printStackTrace();  }
+        admin.CloseCon();
         System.exit(0);
     }//GEN-LAST:event_salirActionPerformed
 
@@ -508,14 +568,14 @@ public class AdminInterface extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_rep_op3ActionPerformed
 
-    private void registrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registrarActionPerformed
-        formulario_investigador = new FormularioInvestigador(admin, true);
-        formulario_investigador.setVisible(true);
-    }//GEN-LAST:event_registrarActionPerformed
+    private void investigadorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_investigadorActionPerformed
+        formulario_registro = new FormularioRegistro(admin, null, 0);
+        formulario_registro.setVisible(true);
+    }//GEN-LAST:event_investigadorActionPerformed
 
     private void personalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_personalActionPerformed
-       formulario_investigador = new FormularioInvestigador(admin, false);
-       formulario_investigador.setVisible(true);
+       formulario_registro = new FormularioRegistro(admin, null, 1);
+       formulario_registro.setVisible(true);
     }//GEN-LAST:event_personalActionPerformed
 
     private void asignar_pActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_asignar_pActionPerformed
@@ -535,7 +595,7 @@ public class AdminInterface extends javax.swing.JFrame {
             String state = (String) cartelera.getValueAt(fila,3);
             String nro_exp = (String) cartelera.getValueAt(fila,0);
             if(state.equals("Negado")){
-                datos_robo = new DatosRobo(admin,nro_exp);
+                datos_robo = new DatosRobo(admin, nro_exp, null);
                 datos_robo.setVisible(true);
             }else{
                 JOptionPane.showMessageDialog(null, "Error: el caso no se encuentra Negado");
@@ -551,7 +611,7 @@ public class AdminInterface extends javax.swing.JFrame {
             String state = (String) cartelera.getValueAt(fila,3);
             String nro_exp = (String) cartelera.getValueAt(fila,0);
             if(state.equals("Negado")){
-                formulario_amonestados= new FormularioAmonestados(admin, nro_exp);
+                formulario_amonestados= new FormularioAmonestados(admin, nro_exp, true);
                 formulario_amonestados.setVisible(true);
             }else{
                 JOptionPane.showMessageDialog(null, "Error: el caso no se encuentra Negado");
@@ -592,6 +652,54 @@ public class AdminInterface extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Error: no ha sido seleccionado un caso de investigación");
         }
     }//GEN-LAST:event_consultar_robadosActionPerformed
+
+    private void suspender_amonestacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_suspender_amonestacionActionPerformed
+        int fila = cartelera.getSelectedRow();
+        if(fila != -1){
+            String state = (String) cartelera.getValueAt(fila,3);
+            String nro_exp = (String) cartelera.getValueAt(fila,0);
+            if(state.equals("Negado")){
+                formulario_amonestados= new FormularioAmonestados(admin, nro_exp, false);
+                formulario_amonestados.setVisible(true);
+            }else{
+                JOptionPane.showMessageDialog(null, "Error: el caso no se encuentra Negado");
+            }
+        }else{
+            JOptionPane.showMessageDialog(null, "Error: no ha sido seleccionado un caso de investigación");
+        }
+    }//GEN-LAST:event_suspender_amonestacionActionPerformed
+
+    private void datos_personalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_datos_personalActionPerformed
+        tabla_personal = new TablaPersona(admin, false);
+        tabla_personal.setVisible(true);
+    }//GEN-LAST:event_datos_personalActionPerformed
+
+    private void datos_investigadorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_datos_investigadorActionPerformed
+        tabla_personal = new TablaPersona(admin, true);
+        tabla_personal.setVisible(true);
+    }//GEN-LAST:event_datos_investigadorActionPerformed
+
+    private void datos_casoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_datos_casoActionPerformed
+        int fila = cartelera.getSelectedRow();
+        if(fila != -1){
+            String nro_exp = (String) cartelera.getValueAt(fila,0);
+            formulario_casos = new FormularioCasos(admin, 1, nro_exp);
+            formulario_casos.setVisible(true);
+            
+        }else{
+            JOptionPane.showMessageDialog(null, "Error: no ha sido seleccionado un caso de investigación");
+        } 
+    }//GEN-LAST:event_datos_casoActionPerformed
+
+    private void borrar_casoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_borrar_casoActionPerformed
+        int fila = cartelera.getSelectedRow();
+        if(fila != -1){
+            String nro_exp = (String) cartelera.getValueAt(fila,0);
+            admin.GestionarCaso(null, nro_exp, null, true);
+        }else{
+            JOptionPane.showMessageDialog(null, "Error: no ha sido seleccionado un caso de investigación");
+        } 
+    }//GEN-LAST:event_borrar_casoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -636,36 +744,44 @@ public class AdminInterface extends javax.swing.JFrame {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem abrir;
+    private javax.swing.JMenu accion;
     private javax.swing.JLabel admin_title;
     private javax.swing.JMenuItem amonestar;
+    private javax.swing.JMenu archivo;
+    private javax.swing.JMenu asignar;
     private javax.swing.JMenuItem asignar_inv;
     private javax.swing.JMenuItem asignar_p;
+    private javax.swing.JMenuItem borrar_caso;
     private javax.swing.JTable cartelera;
     private javax.swing.JMenuItem cerrar;
     private javax.swing.JMenuItem consultar_amonestados;
     private javax.swing.JMenuItem consultar_robados;
     private javax.swing.JMenuItem crear;
+    private javax.swing.JMenuItem datos_caso;
+    private javax.swing.JMenuItem datos_investigador;
+    private javax.swing.JMenuItem datos_personal;
     private javax.swing.JMenuItem equipos_robados;
+    private javax.swing.JMenu gestion;
+    private javax.swing.JMenu gestion_consulta;
+    private javax.swing.JMenu gestion_registro;
     private javax.swing.JMenu info_robo;
+    private javax.swing.JMenuItem investigador;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPopupMenu.Separator jSeparator1;
+    private javax.swing.JMenu manejar;
     private javax.swing.JMenuItem marcar;
     private javax.swing.JMenuItem personal;
     private javax.swing.JMenu personal_amonestado;
     private javax.swing.JButton refresh;
-    private javax.swing.JMenuItem registrar;
-    private javax.swing.JMenu registro;
     private javax.swing.JMenuItem rep_op1;
     private javax.swing.JMenuItem rep_op2;
     private javax.swing.JMenuItem rep_op3;
     private javax.swing.JMenu reportes;
     private javax.swing.JMenuItem salir;
     private javax.swing.JMenuItem seguimiento;
+    private javax.swing.JMenuItem suspender_amonestacion;
     // End of variables declaration//GEN-END:variables
 }

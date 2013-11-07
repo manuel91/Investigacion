@@ -7,6 +7,8 @@ package proyectopatrones.interfaz;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import proyectopatrones.clases.Administrador;
 
@@ -21,6 +23,10 @@ public class TablaRobos extends javax.swing.JFrame {
     private DefaultTableModel model;
     private Administrador admin;
     private String id;
+    private ArrayList reg;
+    
+    
+    private DatosRobo datos_robo;
     /**
      * Creates new form TablaRobos
      */
@@ -32,7 +38,12 @@ public class TablaRobos extends javax.swing.JFrame {
         initComponents();
         this.admin = admin;
         this.id = id;
+        this.reg = new ArrayList(); 
+        Refrescar();
     
+    }
+    
+    public void Refrescar(){
         try{
             stmt = admin.con.createStatement();
 
@@ -41,13 +52,16 @@ public class TablaRobos extends javax.swing.JFrame {
             String titulos[] = {"Serial", "Marca", "Marca", "Modelo", "Observaciones"};
             model = new DefaultTableModel(null, titulos);
             
-            fila = new String[4];
+            reg.clear();
+            fila = new String[5];
             while (res.next()){
                //System.out.println(res.getString(1) + " " + res.getString(2) + " " + res.getString(3) + " " + res.getString(4));
-               fila[0] = res.getString(2);
-               fila[1] = res.getString(3);
-               fila[2] = res.getString(4);
-               fila[3] = res.getString(5);
+               reg.add(res.getString(2));
+               fila[0] = res.getString(3);
+               fila[1] = res.getString(4);
+               fila[2] = res.getString(5);
+               fila[3] = res.getString(6);
+               fila[4] = res.getString(7);
                
                model.addRow(fila);
             }
@@ -55,9 +69,7 @@ public class TablaRobos extends javax.swing.JFrame {
             
         }
         catch ( SQLException e) { e.printStackTrace();  }
-    
     }
-    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -72,6 +84,9 @@ public class TablaRobos extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         robos = new javax.swing.JTable();
         cerrar = new javax.swing.JButton();
+        modificar = new javax.swing.JButton();
+        eliminar = new javax.swing.JButton();
+        refresh = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -98,6 +113,27 @@ public class TablaRobos extends javax.swing.JFrame {
             }
         });
 
+        modificar.setText("Modificar");
+        modificar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                modificarActionPerformed(evt);
+            }
+        });
+
+        eliminar.setText("Eliminar");
+        eliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                eliminarActionPerformed(evt);
+            }
+        });
+
+        refresh.setText("Refrescar");
+        refresh.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                refreshActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -110,13 +146,17 @@ public class TablaRobos extends javax.swing.JFrame {
                         .addContainerGap())
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addGap(288, 288, 288))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(cerrar)
-                                .addContainerGap())))))
+                        .addComponent(jLabel1)
+                        .addGap(288, 288, 288))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(refresh)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(modificar)
+                        .addGap(13, 13, 13)
+                        .addComponent(eliminar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(cerrar)
+                        .addContainerGap())))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -126,7 +166,11 @@ public class TablaRobos extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(cerrar)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cerrar)
+                    .addComponent(modificar)
+                    .addComponent(eliminar)
+                    .addComponent(refresh))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -147,6 +191,30 @@ public class TablaRobos extends javax.swing.JFrame {
     private void cerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cerrarActionPerformed
         this.setVisible(false);
     }//GEN-LAST:event_cerrarActionPerformed
+
+    private void modificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modificarActionPerformed
+        int fila = robos.getSelectedRow();
+        if(fila != -1){
+            datos_robo = new DatosRobo(admin, id, (String) reg.get(fila));
+            datos_robo.setVisible(true);
+        }else{
+            JOptionPane.showMessageDialog(null, "Error: no ha sido seleccionado un equipo robado");
+        }
+    }//GEN-LAST:event_modificarActionPerformed
+
+    private void eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarActionPerformed
+        int fila = robos.getSelectedRow();
+        if(fila != -1){
+            admin.ManejarEquiposRobados(null, (String) reg.get(fila), true);
+            //Refrescar();
+        }else{
+            JOptionPane.showMessageDialog(null, "Error: no ha sido seleccionado un equipo robado");
+        }
+    }//GEN-LAST:event_eliminarActionPerformed
+
+    private void refreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshActionPerformed
+        Refrescar();
+    }//GEN-LAST:event_refreshActionPerformed
 
     /**
      * @param args the command line arguments
@@ -191,9 +259,12 @@ public class TablaRobos extends javax.swing.JFrame {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cerrar;
+    private javax.swing.JButton eliminar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JButton modificar;
+    private javax.swing.JButton refresh;
     private javax.swing.JTable robos;
     // End of variables declaration//GEN-END:variables
 }
