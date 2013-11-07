@@ -4,6 +4,9 @@
  */
 package proyectopatrones.interfaz;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import proyectopatrones.clases.Caso_de_Investigacion;
 import proyectopatrones.clases.RegistrarFraude;
 import proyectopatrones.clases.RegistrarInvestigacion;
@@ -15,8 +18,14 @@ import proyectopatrones.clases.Usuario;
  * @author Alejandro
  */
 public class FormularioCasos extends javax.swing.JFrame {
+    private Statement stmt;
+    private ResultSet res;
+    private String id;
     private int typeU;
     private Usuario user;
+
+
+            
     /**
      * Creates new form FormularioCasos
      */
@@ -24,10 +33,71 @@ public class FormularioCasos extends javax.swing.JFrame {
         initComponents();
     }
     
-    public FormularioCasos(Usuario user, int typeU) {
+    public FormularioCasos(Usuario user, int typeU, String id) {
         initComponents();
         this.user = user;
         this.typeU = typeU;
+        this.id = id;
+        
+        if(id != null){
+            String[] irr = {"Activación de Servicios", "Detección Brecha en Proceso", "Estafa", "Hurto - Robo", "Inspección Análisis de Crédito",
+                            "Irregularidad Administrativa", "Irregularidad Laboral", "Liberación de Serial", "Negación Serial", "Solicitud de Información",
+                            "Uso Indebido de Línea", "Indebido de Sistemas"};
+
+            String[] sub_irr = {"Activación de Líneas", "Activación de Servicios", "Aplicación de Ajustes", "Cambio de Datos", "Cambio de Móvil",
+                            "Cambio de Plan", "Canjes de Puntos", "Consulta de Datos", "Consulta Detalle de Llamadas", "Desconexión de Línea",
+                            "Equipos Celulares", "Facturación de Planes - Promociones", "Fuga de Información", "Suministro de Claves", "Transferencia de Saldos",
+                            "Usurpación de Identidad"};
+            
+            String[] typeC = {"Robo", "Fraude", "Investigación"};
+            
+            String sql = "select fecha_inicio, dias, mes, movil_afectado, tipo_de_caso, tipo_de_irregularidad, "
+                    + "subtipo_de_irregularidad, objetivo_agraviado, incidencia, duracion, descripcion, area_apoyo, deteccion_procedencia, "
+                    + "diagnostico_detalle, actuaciones_acciones, soporte from casos_de_investigacion where nro_expediente = "+id;
+            
+            try{
+                stmt = user.con.createStatement();
+                res = stmt.executeQuery(sql);    
+                while (res.next()){
+                    fecha_inicio.setText(res.getString(1));
+                    dias.setText(res.getString(2));
+                    mes.setText(res.getString(3));
+                    movil_afectado.setText(res.getString(4));
+                    
+                    for(int i = 0; i < 3; i++){
+                        if(res.getString(5).equals(typeC[i])){
+                            tipo_caso.setSelectedIndex(i);
+                            break;
+                        }
+                    }
+                    
+                    for(int i = 0; i < 12; i++){
+                        if(res.getString(6).equals(irr[i])){
+                            tipo_irregularidad.setSelectedIndex(i);
+                            break;
+                        }
+                    }
+                    
+                    for(int i = 0; i < 16; i++){
+                        if(res.getString(7).equals(sub_irr[i])){
+                            subtipo_irregularidad.setSelectedIndex(i);
+                            break;
+                        }
+                    }
+                    
+                    objetivo_agraviado.setText(res.getString(8));
+                    incidencia.setText(res.getString(9));
+                    duracion.setText(res.getString(10));
+                    descripcion.setText(res.getString(11));
+                    area_apoyo.setText(res.getString(12));
+                    deteccion_procedencia.setText(res.getString(13));
+                    diagnostico.setText(res.getString(14));
+                    actuaciones_acciones.setText(res.getString(15));
+                    soporte.setText(res.getString(16));                
+                }
+            }catch ( SQLException e) { e.printStackTrace();  }
+            send.setText("Modificar");
+        }
     }
 
     /**
@@ -349,6 +419,8 @@ public class FormularioCasos extends javax.swing.JFrame {
         datos[2] = mes.getText();
         datos[3] = movil_afectado.getText(); 
         datos[4] = objetivo_agraviado.getText();
+        datos[5] = (String) tipo_irregularidad.getSelectedItem();
+        datos[6] = (String) subtipo_irregularidad.getSelectedItem();   
         datos[7] = incidencia.getText();
         datos[8] = duracion.getText();
         datos[9] = descripcion.getText();
@@ -358,96 +430,6 @@ public class FormularioCasos extends javax.swing.JFrame {
         datos[13] = actuaciones_acciones.getText();
         datos[14] = soporte.getText();
         
-        switch(tipo_irregularidad.getSelectedIndex()){
-                case 0:
-                    datos[5] = "Activación de Servicios";
-                    break;
-                case 1:
-                    datos[5] = "Detección Brecha en Proceso";
-                    break;
-                case 2:
-                    datos[5] = "Estafa";
-                    break;
-                case 3:
-                    datos[5] = "Hurto - Robo";
-                    break;
-                case 4:
-                    datos[5] = "Inspección Análisis de Crédito";
-                    break;
-                case 5:
-                    datos[5] = "Irregularidad Administrativa";
-                    break;
-                case 6:
-                    datos[5] = "Irregularidad Laboral";
-                    break;
-                case 7:
-                    datos[5] = "Liberación de Serial";
-                    break;
-                case 8:
-                    datos[5] = "Negación Serial";
-                    break;
-                case 9:
-                    datos[5] = "Solicitud de Información";
-                    break;
-                case 10:
-                    datos[5] = "Uso Indebido de Línea";
-                    break;
-                case 11:
-                    datos[5] = "Uso Indebido de Sistemas";
-                    break;
-            }
-            
-            switch(subtipo_irregularidad.getSelectedIndex()){
-                case 0:
-                    datos[6] = "Activación de Líneas";
-                    break;
-                case 1:
-                    datos[6] = "Activación de Servicios";
-                    break;
-                case 2:
-                    datos[6] = "Aplicación de Ajustes";
-                    break;
-                case 3:
-                    datos[6] = "Cambio de Datos";
-                    break;
-                case 4:
-                    datos[6] = "Cambio de Móvil";
-                    break;
-                case 5:
-                    datos[6] = "Cambio de Plan";
-                    break;
-                case 6:
-                    datos[6] = "Canjes de Puntos";
-                    break;
-                case 7:
-                    datos[6] = "Consulta de Datos";
-                    break;
-                case 8:
-                    datos[6] = "Consulta Detalle de Llamadas";
-                    break;
-                case 9:
-                    datos[6] = "Desconexión de Línea";
-                    break;
-                case 10:
-                    datos[6] = "Equipos Celulares";
-                    break;
-                case 11:
-                    datos[6] = "Facturación de Planes - Promociones";
-                    break;
-                case 12:
-                    datos[6] = "Fuga de Información";
-                    break;
-                case 13:
-                    datos[6] = "Suministro de Claves";
-                    break;
-                case 14:
-                    datos[6] = "Transferencia de Saldos";
-                    break;
-                case 15:
-                    datos[6] = "Usurpación de Identidad";
-                    break;
-        }
-            
         switch(typeU){
             case 0:
                 datos[15] = "Abierto";
@@ -459,7 +441,10 @@ public class FormularioCasos extends javax.swing.JFrame {
             
         int typeC = tipo_caso.getSelectedIndex();
         
-        user.CrearCaso(datos, typeC);
+        if(id != null)
+            user.GestionarCaso(datos, id, (String) tipo_caso.getSelectedItem(), false);
+        else
+            user.CrearCaso(datos, typeC);
 
         this.setVisible(false);
     }//GEN-LAST:event_sendActionPerformed

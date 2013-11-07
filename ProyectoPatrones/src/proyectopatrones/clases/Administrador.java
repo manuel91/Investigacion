@@ -85,69 +85,53 @@ public class Administrador extends Usuario {
     }
     
     
-    public void ManejarPersonalAmonestado(String[] datos, String ci){
+    public void ManejarPersonalAmonestado(String ci, boolean flag){
         try{
-            String sql = "update investigador set cedula = ?, nombre = ?, apellido = ?, empresa = ? where cedula = ?";
-            PreparedStatement ps = con.prepareStatement(sql);
-            ps.setString(1, datos[0]);
-            ps.setString(2, datos[1]);
-            ps.setString(3, datos[2]);
-            ps.setString(4, datos[3]);
-            ps.setString(5, ci);
-            int aux1 = ps.executeUpdate();
+            String sql; 
             
-            if(aux1>0){
-                sql = "update casos_de_investigacion set cedula_investigador = ?, investigador = ? where cedula_investigador = ?";
-                ps = con.prepareStatement(sql);
-                ps.setString(1, datos[0]);
-                ps.setString(2, datos[1]+" "+datos[2]);
-                ps.setString(3, ci);
-                int aux2 = ps.executeUpdate();
-                if(aux2>0) JOptionPane.showMessageDialog(null, "Datos Guardados Exitosamete");
-            } 
+            if(flag)
+                sql= "update personal set amonestado=1 where cedula="+ci;
+            else
+                sql= "update personal set amonestado=0 where cedula="+ci;
             
-        } catch(Exception e){ JOptionPane.showMessageDialog(null, "Error" + e.getMessage()); }
-    }
-    
-    public void ManejarEquiposRobados(String[] datos){
-        try{
-            String sql = "update equipo_robado set serial = ?, tipo_equipo = ?, marca = ?, modelo = ? where nro_expediente = ?";
-            PreparedStatement ps = con.prepareStatement(sql);
-            ps.setString(1, datos[0]);
-            ps.setString(2, datos[1]);
-            ps.setString(3, datos[2]);
-            ps.setString(4, datos[3]);
-            ps.setString(5, datos[5]);
-            int aux1 = ps.executeUpdate();
+            PreparedStatement ps = con.prepareStatement(sql);   
             
-            if(aux1>0){
-                sql = "update casos_de_investigacion set observaciones = ? where nro_expediente = ?";
-                ps = con.prepareStatement(sql);
-                ps.setString(1, datos[4]);
-                ps.setString(2, datos[5]);
-
-                int aux2 = ps.executeUpdate();
-                if(aux2>0) JOptionPane.showMessageDialog(null, "Datos Guardados Exitosamete");
-            } 
+            int aux = ps.executeUpdate();
+            if(aux>0){
+                JOptionPane.showMessageDialog(null, "Datos Guardados Exitosamete");
+            }
             
         } catch(Exception e){ JOptionPane.showMessageDialog(null, "Error" + e.getMessage()); }
         
     }
     
-    public void RegistrarEquiposRobados(String[] datos){
-        try{
-            String sql = "insert into equipo_robado (nro_expediente, serial, tipo_equipo, marca, modelo, observaciones) values (?,?,?,?,?,?)";
-            PreparedStatement ps = con.prepareStatement(sql);
-            ps.setString(1, datos[5]);
-            ps.setString(2, datos[0]);
-            ps.setString(3, datos[1]);
-            ps.setString(4, datos[2]);
-            ps.setString(5, datos[3]);
-            ps.setString(6, datos[4]);
-            
-            int aux = ps.executeUpdate();
+    public void ManejarEquiposRobados(String[] datos, String reg, boolean flag){
+       try{
+           String sql;
+           if(!flag){
+                if(reg != null)
+                    sql = "update equipo_robado set nro_expediente = ?, serial = ?, tipo_equipo = ?, marca = ?, modelo = ?, observaciones = ? where nro_registro = "+reg;
+                else
+                    sql = "insert into equipo_robado (nro_expediente, serial, tipo_equipo, marca, modelo, observaciones) values (?,?,?,?,?,?)";
 
-            if(aux>0) JOptionPane.showMessageDialog(null, "Datos Guardados Exitosamete");
+                PreparedStatement ps = con.prepareStatement(sql);
+
+                ps.setString(1, datos[5]);
+                ps.setString(2, datos[0]);
+                ps.setString(3, datos[1]);
+                ps.setString(4, datos[2]);
+                ps.setString(5, datos[3]);
+                ps.setString(6, datos[4]);
+
+                int aux = ps.executeUpdate();
+
+                if(aux>0) JOptionPane.showMessageDialog(null, "Datos Guardados Exitosamete");
+           }else{
+               sql = "delete from equipo_robado where nro_registro = "+reg;
+               PreparedStatement ps = con.prepareStatement(sql);
+               int aux = ps.executeUpdate();
+               if(aux>0) JOptionPane.showMessageDialog(null, "Datos Guardados Exitosamete");
+           }
             
         } catch(Exception e){ JOptionPane.showMessageDialog(null, "Error" + e.getMessage()); }
     }
@@ -181,18 +165,70 @@ public class Administrador extends Usuario {
         } catch(Exception e){ JOptionPane.showMessageDialog(null, "Error" + e.getMessage()); }
     }
     
-    public void Amonestar(String ci){
-          try{
-            String sql = "update personal set amonestado=1 where cedula="+ci;
-            PreparedStatement ps = con.prepareStatement(sql);   
-            
-            int aux = ps.executeUpdate();
-            if(aux>0){
-                JOptionPane.showMessageDialog(null, "Personal amonestado Exitosamete");
-            }
-            
-        } catch(Exception e){ JOptionPane.showMessageDialog(null, "Error" + e.getMessage()); }
+    public void GestionarPersonal(String[] datos, String id, boolean flag){
+        try{
+           String sql;
+           int aux1 = 0, aux2 = 0;
+           
+           if(!flag){
+                sql = "update personal set cedula = ? , nombre = ?, apellido = ?, empresa = ? where cedula = ?";
+                PreparedStatement ps = con.prepareStatement(sql);
+                ps.setString(1, datos[0]);
+                ps.setString(2, datos[1]);
+                ps.setString(3, datos[2]);
+                ps.setString(4, datos[3]);
+                ps.setString(5, id);
+                aux1 = ps.executeUpdate();
+           }else{
+               sql = "delete from personal where cedula = ?";
+               PreparedStatement ps = con.prepareStatement(sql);
+               ps.setString(1, id);
+               aux1 = ps.executeUpdate();
+           }
+           
+           if(aux1>0){
+               sql = "delete from personal_casos where cedula = ?";
+               PreparedStatement ps = con.prepareStatement(sql);
+               ps.setString(1, id);
+               aux2 = ps.executeUpdate();
+               if(aux2>0) JOptionPane.showMessageDialog(null, "Datos Guardados Exitosamete");
+           }
+           
+        } catch(Exception e){ JOptionPane.showMessageDialog(null, "Error" + e.getMessage()); } 
+    }
     
+    public void GestionarInvestigador(String[] datos, String id, boolean flag){
+        try{
+           String sql;
+           int aux1 = 0, aux2 = 0;
+           
+           if(!flag){
+                sql = "update investigador set cedula = ? , nombre = ?, apellido = ?, empresa = ? where cedula = ?";
+                PreparedStatement ps = con.prepareStatement(sql);
+                ps.setString(1, datos[0]);
+                ps.setString(2, datos[1]);
+                ps.setString(3, datos[2]);
+                ps.setString(4, datos[3]);
+                ps.setString(5, id);
+                aux1 = ps.executeUpdate();
+           }else{
+               sql = "delete from investigador where cedula = ?";
+               PreparedStatement ps = con.prepareStatement(sql);
+               ps.setString(1, id);
+               aux1 = ps.executeUpdate();
+           }
+           
+           if(aux1>0){
+               sql = "update casos_de_investigacion set investigador = ?, cedula_investigador = ?  where cedula_investigador = ?";
+               PreparedStatement ps = con.prepareStatement(sql);
+               ps.setString(1, "-");
+               ps.setString(2, "0");
+               ps.setString(3, id);
+               aux2 = ps.executeUpdate();
+               if(aux2>0) JOptionPane.showMessageDialog(null, "Datos Guardados Exitosamete");
+           }
+           
+        } catch(Exception e){ JOptionPane.showMessageDialog(null, "Error" + e.getMessage()); } 
     }
     
     public void EmitirReporte(){}

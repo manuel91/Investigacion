@@ -13,24 +13,60 @@ import proyectopatrones.clases.Administrador;
  *
  * @author Alejandro
  */
-public class FormularioInvestigador extends javax.swing.JFrame {
+public class FormularioRegistro extends javax.swing.JFrame {
     private Statement stmt;
     private ResultSet res;
     private Administrador admin;
-    private boolean flag;
+    private String id;
+    private int op;
+    private boolean load;
     /**
      * Creates new form FormularioRegistro
      */
-    public FormularioInvestigador() {
+    public FormularioRegistro() {
         initComponents();
     }
     
-    public FormularioInvestigador(Administrador admin, boolean flag) {
+    public FormularioRegistro(Administrador admin, String id, int op) {
         initComponents();
         this.admin = admin;
-        this.flag = flag;
-        if(!flag)
-            title.setText("Registrar Personal");
+        this.id = id;
+        this.op = op;
+
+        String sql = "";
+        load = false;
+        
+        switch(op){
+            case 0:
+                title.setText("Registrar Investigador");
+                break;
+            case 1:
+                title.setText("Registrar Personal");
+                break;
+            case 2:
+                title.setText("Editar Investigador");
+                sql = "select * from investigador where cedula = "+id;
+                load = true;
+                break;
+            case 3:
+                title.setText("Editar Personal");
+                sql = "select * from personal where cedula = "+id;
+                load = true;
+                break;
+        }
+        
+        if(load){
+            try{
+                stmt = admin.con.createStatement();
+                res = stmt.executeQuery(sql);    
+                while (res.next()){
+                    cedula.setText(res.getString(1));
+                    nombre.setText(res.getString(2));
+                    apellido.setText(res.getString(3));
+                    empresa.setText(res.getString(4));
+                }
+            }catch ( SQLException e) { e.printStackTrace();  }
+        }
     }
 
     /**
@@ -173,11 +209,21 @@ public class FormularioInvestigador extends javax.swing.JFrame {
         datos[2] = apellido.getText();
         datos[3] = empresa.getText();
         
-        if(flag)
-            admin.RegistrarInvestigador(datos);
-        else
-            admin.RegistrarPersonal(datos);
-        
+        switch(op){
+            case 0:
+                admin.RegistrarInvestigador(datos);
+                break;
+            case 1:
+                admin.RegistrarPersonal(datos);
+                break;
+            case 2:
+                admin.GestionarInvestigador(datos, id, false);
+                break;
+            case 3:
+                admin.GestionarPersonal(datos, id, false);
+                break;
+        }
+
         this.setVisible(false);
     }//GEN-LAST:event_enviarActionPerformed
 
@@ -202,13 +248,13 @@ public class FormularioInvestigador extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FormularioInvestigador.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FormularioRegistro.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FormularioInvestigador.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FormularioRegistro.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FormularioInvestigador.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FormularioRegistro.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FormularioInvestigador.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FormularioRegistro.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
@@ -218,7 +264,7 @@ public class FormularioInvestigador extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
 
             public void run() {
-                new FormularioInvestigador().setVisible(true);
+                new FormularioRegistro().setVisible(true);
             }
         });
     }

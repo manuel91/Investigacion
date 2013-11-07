@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/1"/>
+<<<<<<< HEAD
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
@@ -13,5 +14,13 @@
             <file>file:/C:/Users/Corina/Downloads/ELECTIVAS/Patrones%20de%20diseño%20y%20framework/Proyecto/Investigacion/ProyectoPatrones/src/proyectopatrones/clases/Investigador.java</file>
             <file>file:/C:/Users/Corina/Downloads/ELECTIVAS/Patrones%20de%20diseño%20y%20framework/Proyecto/Investigacion/ProyectoPatrones/src/proyectopatrones/ProyectoPatrones.java</file>
         </group>
+=======
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/1">
+        <file>file:/C:/Users/Alejandro/Documents/Universidad%20Central%20de%20Venezuela/Patrones%20de%20Diseno%20y%20Frameworks/Proyecto/Investigacion/ProyectoPatrones/src/proyectopatrones/interfaz/AdminInterface.java</file>
+        <file>file:/C:/Users/Alejandro/Documents/Universidad%20Central%20de%20Venezuela/Patrones%20de%20Diseno%20y%20Frameworks/Proyecto/Investigacion/ProyectoPatrones/src/proyectopatrones/interfaz/FormularioCasos.java</file>
+        <file>file:/C:/Users/Alejandro/Documents/Universidad%20Central%20de%20Venezuela/Patrones%20de%20Diseno%20y%20Frameworks/Proyecto/Investigacion/ProyectoPatrones/src/proyectopatrones/clases/Usuario.java</file>
+        <file>file:/C:/Users/Alejandro/Documents/Universidad%20Central%20de%20Venezuela/Patrones%20de%20Diseno%20y%20Frameworks/Proyecto/Investigacion/ProyectoPatrones/src/proyectopatrones/clases/Administrador.java</file>
+        <file>file:/C:/Users/Alejandro/Documents/Universidad%20Central%20de%20Venezuela/Patrones%20de%20Diseno%20y%20Frameworks/Proyecto/Investigacion/ProyectoPatrones/src/proyectopatrones/clases/Investigacion.java</file>
+>>>>>>> bcae0aa8274c1212470dfb14813c7355156a989a
     </open-files>
 </project-private>

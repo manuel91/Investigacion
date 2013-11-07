@@ -28,15 +28,17 @@ public class Investigador extends Usuario{
         try{
             Class.forName("com.mysql.jdbc.Driver");
             con = DriverManager.getConnection("jdbc:mysql://localhost/CasosInv", "root", "19441733");
+
         }
         /**** Excepción que se dispara si falla la carga del driver ****/
         catch( ClassNotFoundException e ) { e.printStackTrace();  }
         
        /**** Excepción que se dispara si falla la conexión *****/
         catch ( SQLException e) { e.printStackTrace();  }
+
         InvestigadorInterface i = new InvestigadorInterface();
         i.setVisible(true);
-        
+
     }
  
 }
