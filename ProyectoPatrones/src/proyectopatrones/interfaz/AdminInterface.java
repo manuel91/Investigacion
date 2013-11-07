@@ -675,8 +675,8 @@ public class AdminInterface extends javax.swing.JFrame {
     }//GEN-LAST:event_datos_personalActionPerformed
 
     private void datos_investigadorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_datos_investigadorActionPerformed
-        tabla_personal = new TablaPersona(admin, true);
-        tabla_personal.setVisible(true);
+        tabla_investigador = new TablaPersona(admin, true);
+        tabla_investigador.setVisible(true);
     }//GEN-LAST:event_datos_investigadorActionPerformed
 
     private void datos_casoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_datos_casoActionPerformed
