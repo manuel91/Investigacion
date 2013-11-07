@@ -4,7 +4,7 @@
  */
 package proyectopatrones;
 
-import proyectopatrones.interfaz.AdminInterface;
+import proyectopatrones.interfaz.Autenticar;
 
 
 
@@ -18,8 +18,8 @@ public class ProyectoPatrones {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-       AdminInterface l = new AdminInterface();
-       l.setVisible(true);
+       Autenticar A= new Autenticar();
+       A.setVisible(true);
     }
     
 }

@@ -52,12 +52,12 @@ public class AdminInterface extends javax.swing.JFrame {
      */
     public AdminInterface(){
         initComponents();
-        admin = new Administrador();
         try{
            AlertY = new ArrayList();
            AlertO = new ArrayList();
            AlertR = new ArrayList();
-           
+           String[] datos=admin.getDatos();
+           this.admin_title.setText("Bienvenido "+datos[1]+" "+datos[2]);
            ci_inv = new ArrayList();
            /**** avisamos ****/
            //System.out.println( "Si he llegado hasta aquí es que se ha producido la conexión");
